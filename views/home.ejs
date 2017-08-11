@@ -1,0 +1,191 @@
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	 <style>			
+		a {
+			text-decoration: none;
+		}		
+		
+		.list{
+			border-type: solid;
+		}
+		
+		header{
+			margin-top:0px;
+			text-align:right;
+		}
+		.sidenav {
+			height: 100%; /* 100% Full-height */
+			width: 0; /* 0 width - change this with JavaScript */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Stay on top */
+			top: 0;
+			left: 0;
+			background-color: #111; /* Black*/
+			overflow-x: hidden; /* Disable horizontal scroll */
+			padding-top: 60px; /* Place content 60px from the top */
+			transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+		}
+
+		/* The navigation menu links */
+		.sidenav a {
+			padding: 8px 8px 8px 32px;
+			text-decoration: none;
+			font-size: 25px;
+			color: #818181;
+			display: block;
+			transition: 0.3s
+		}
+
+		/* When you mouse over the navigation links, change their color */
+		.sidenav a:hover, .offcanvas a:focus{
+			color: #f1f1f1;
+		}
+
+		/* Position and style the close button (top right corner) */
+		.sidenav .closebtn {
+			position: absolute;
+			top: 0;
+			right: 25px;
+			font-size: 36px;
+			margin-left: 50px;
+		}
+
+		/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+		#main {
+			transition: margin-left .5s;
+			padding: 20px;
+		}
+
+		/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+		@media screen and (max-height: 450px) {
+			.sidenav {padding-top: 15px;}
+			.sidenav a {font-size: 18px;}
+		}
+		table {
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		}
+		td, th {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+		
+		label, input { display:block; }
+		input.text { margin-bottom:12px; width:95%; padding: .4em; }
+		fieldset { padding:0; border:0; margin-top:25px; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+		
+	</style>
+	<header>
+	<% if(currentUser){ %>
+		<% if("name" in currentUser){ %>
+			<p>Welcome, <%=currentUser.name%><a href="/logout"><font color="red"> Logout</font></a></p>
+		<% }else{ %>
+			<p><a href="/register"><img src="./static/images/Register.png" width="100" height="30"></img></a><a href="/login"><img src="./static/images/Login.png" width="100" height="30"></img></a></p>
+		<% } %>		
+	<% }else{ %>
+		<p>You have to <a href="/login">log in</a>!</p>
+	<% } %>	
+	</header>
+	
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <% sections.forEach(function(sect){%>
+	<a href="/posts/in/<%=s.name%>"><%=s.name%></a>
+  <% }); %>
+  <button id="newSection">
+	<img src="./static/images/addSection.png" width="30" height="30">
+  </button>
+</div>
+
+<!-- Use any element to open the sidenav -->
+<span onclick="openNav()"><img src="./static/images/openSidebar.png" width="30" height="30"> </span>
+	
+	<center>
+	<h1> Welcome to Aniekan's blog</h1>
+	</center>
+  
+<script>
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+$( function() {
+	var dialog, form, newSectionName="";
+	
+	function addSection() {	
+		
+        dialog.dialog( "close" );
+    }
+	
+	dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 350,
+      modal: true,
+      buttons: {
+        "OK": addSection,
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+        form[0].reset(); 
+      }
+    });
+	
+	form = dialog.find( "form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addSection();
+    });
+ 
+    $( "#newSection" ).button().on( "click", function() {
+      dialog.dialog( "open" );
+    });
+});
+</script>
+
+<div id="dialog-form" title="Add New Section">
+ 
+  <form method="POST" action="/newSection">
+    <fieldset>	
+	<% if("name" in currentUser){ %>
+      <label for="name">Section Name</label>
+      <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+	  <br/>
+      <label for="description">Description</label>
+      <textarea name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
+	  </textarea>
+      
+      <input type="hidden" name="creator" id="creator" value="<%=currentUser.id%>" class="text ui-widget-content ui-corner-all">
+ 
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+	  
+	<% }else{ %>
+      <h3>A user needs to be signed in</h3>
+	  <table>
+	  <tr>
+	  <td><a href="/login">Login</a></td>
+	  <td><a href="/register">Register</a></td>
+	  </tr>
+	  </table>
+	<% } %>
+    </fieldset>
+  </form>
+</div>

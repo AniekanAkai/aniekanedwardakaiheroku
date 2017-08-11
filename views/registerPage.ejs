@@ -1,0 +1,32 @@
+
+	<style>
+		form{
+			text-align: left;
+			position: relative;
+			height: 100px;
+			width: 200px;
+		}		
+		
+		.label{
+			margin-top: 25px;
+			padding-top: 10px;
+		}
+		
+		.input{
+			margin-right: 10px;
+			padding-left: 10px;
+		}
+	</style>
+
+	<body>
+		<center>
+			<form method="POST" action="/register">
+				<label>Full name:</label><input type="text" name="fullname" value='<%=fullname%>'/>
+				<label>Email:</label><input type="text" name="email" value='<%=email%>'/>
+				<label>Confirm Email:</label><input type="text" name="confirmEmail"/>
+				<label>Password:</label><input type="password" name="password"/>
+				<label>Confirm Password:</label><input type="password" name="confirmPassword"/>
+				<input type="submit"/>		
+			</form>
+		</center>
+	</body>

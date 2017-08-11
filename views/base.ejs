@@ -1,0 +1,22 @@
+	 <style>			
+		a {
+			text-decoration: none;
+		}		
+		
+		.list{
+			border-type: solid;
+		}
+		
+		header{
+			margin-top:0px;
+			text-align:right;
+		}
+		
+	</style>
+	<header>
+		<% if(currentUser){ %>
+			<p><a href="/register"><img src="/static/images/Register_withLine.png"></img></a><a href="/login"><img src="/static/images/Login_noLine.png"></img></a></p>
+		<% }else{ %>
+			<p>Welcome, {{currentUser.username}}<a href="/logout"><font color="red">| Logout</font></a></p>
+		<% } %>		
+	</header>

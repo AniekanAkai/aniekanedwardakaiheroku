@@ -1,0 +1,61 @@
+ <style>			
+	a {
+		text-decoration: none;
+	}		
+	
+	.list{
+		border-type: solid;
+	}
+	
+	header{
+		margin-top:0px;
+		text-align:right;
+	}
+	
+</style>
+<header>
+	<% if(currentUser){ %>
+		<% if("name" in currentUser){ %>
+			<p>Welcome, <%=currentUser.name%><a href="/logout"><font color="red"> Logout</font></a></p>
+		<% }else{ %>
+			<p><a href="/register"><img src="./static/images/Register.png" width="100" height="30"></img></a><a href="/login"><img src="./static/images/Login.png" width="100" height="30"></img></a></p>
+		<% } %>		
+	<% }else{ %>
+		<p>You have to <a href="/login">log in</a>!</p>
+	<% } %>	
+	</header>
+<%if(currentUser.email=="aniekanakai@gmail.com"){ %>
+	<center>
+	<%users.forEach(function(i){%>
+		<div class="list">
+			<form method="POST" action="/admin/updateUser/<%=i.id%>">
+				<p><label name="name" value=<%=i.name%>><%=i.name%></label></p>
+				<input type="hidden" name="name" value="<%=i.name%>"/>
+				<p>Email:<label  name="email" value=<%=i.email%>><%=i.email%></label></p>
+				<input type="hidden" name="email" value="<%=i.email%>"/>
+				<p>Status:
+					<select name="status">Status:
+					<% if(i.status=="Pending"){%>
+					<option  value="Pending Approval" selected>Pending Approval</option><option  value="Approved">Approved</option><option  value="Rejected">Rejected</option>
+					<% } %>
+					<% if(i.status=="Approved"){%>
+					<option  value="Pending Approval">Pending Approval</option><option  value="Approved" selected>Approved</option><option  value="Rejected">Rejected</option>
+					<% } %>
+					<% if(i.status=="Rejected"){%>
+					<option  value="Pending Approval">Pending Approval</option><option  value="Approved">Approved</option><option  value="Rejected" selected>Rejected</option>
+					<% } %>
+					</select>
+				</p>
+				<input type="submit" name="submission" value="Delete User"></input>
+				<input type="submit" name="submission" value="Save Changes"></input>
+			</form>
+		</div>
+		<%})%>
+	<%} else {%>
+		<h1> Only the admin user can see this. </h1>
+	<%}%>
+	</center>
+
+
+
+
