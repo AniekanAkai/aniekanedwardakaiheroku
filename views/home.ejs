@@ -95,8 +95,8 @@
 	
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <% sections.forEach(function(sect){%>
-	<a href="/posts/in/<%=s.name%>"><%=s.name%></a>
+  <% sections.forEach(function(s){%>
+	<a href="/articles/in/<%=s.name%>"><%=s.name%></a>
   <% }); %>
   <button id="newSection">
 	<img src="./static/images/addSection.png" width="30" height="30">
@@ -107,19 +107,19 @@
 <span onclick="openNav()"><img src="./static/images/openSidebar.png" width="30" height="30"> </span>
 	
 	<center>
-	<h1> Welcome to Aniekan's blog</h1>
+	<h1>DAS GUT</h1>
 	</center>
   
 <script>
-/* Set the width of the side navigation to 250px */
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-}
+	/* Set the width of the side navigation to 250px */
+	function openNav() {
+		document.getElementById("mySidenav").style.width = "250px";
+	}
 
-/* Set the width of the side navigation to 0 */
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-}
+	/* Set the width of the side navigation to 0 */
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+	}
 </script>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -127,11 +127,6 @@ function closeNav() {
 <script>
 $( function() {
 	var dialog, form, newSectionName="";
-	
-	function addSection() {	
-		
-        dialog.dialog( "close" );
-    }
 	
 	dialog = $( "#dialog-form" ).dialog({
       autoOpen: false,
@@ -145,34 +140,50 @@ $( function() {
         }
       },
       close: function() {
-        form[0].reset(); 
+        form[0].reset();
       }
     });
 	
 	form = dialog.find( "form" ).on( "submit", function( event ) {
-      event.preventDefault();
-      addSection();
+		event.preventDefault();
+		addSection();
     });
  
     $( "#newSection" ).button().on( "click", function() {
       dialog.dialog( "open" );
     });
+	
+	function addSection() {	
+		var $form = $( "#newSectionForm" )
+		var url = $form.attr( "action" );
+		console.log(url);
+		newSectionName = $form.find("input[name='name']").val();
+		console.log(newSectionName);
+		var descriptionVal = $form.find("textarea[name='description']").val();
+		console.log(descriptionVal);
+		var creatorVal = $form.find("input[name='creator']").val();
+		console.log(creatorVal);
+		
+		var posting = $.post( url, { name:newSectionName, description:descriptionVal, creator:creatorVal } );
+		
+        dialog.dialog( "close" );
+    }
 });
 </script>
 
 <div id="dialog-form" title="Add New Section">
  
-  <form method="POST" action="/newSection">
+  <form method="POST" action="/newSection" id="newSectionForm">
     <fieldset>	
 	<% if("name" in currentUser){ %>
       <label for="name">Section Name</label>
-      <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all"/>
 	  <br/>
       <label for="description">Description</label>
-      <textarea name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
+      <textarea name="description" id="description" value="" class="text ui-widget-content ui-corner-all"/>
 	  </textarea>
       
-      <input type="hidden" name="creator" id="creator" value="<%=currentUser.id%>" class="text ui-widget-content ui-corner-all">
+      <input type="hidden" name="creator" id="creator" value="<%=currentUser._id%>" class="text ui-widget-content ui-corner-all"/>
  
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">

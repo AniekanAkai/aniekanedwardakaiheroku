@@ -50,6 +50,10 @@ app.post("/register", userController.createUser);
 
 app.post("/admin/updateUser/:userId", userController.updateUser);
 
+app.post("/newSection", articleController.newSection);
+
+app.post("/articles/in/:sectionName", articleController.listArticleForSection);
+
 app.listen(port, function(err){
 	console.log("listening on %s", port);
 });

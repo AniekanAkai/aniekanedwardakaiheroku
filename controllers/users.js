@@ -45,11 +45,12 @@ controller.login = [function(req, res){
 	if(req.body.email!=''&& req.body.password!=''){
 		Person.find({email:req.body.email, password:req.body.password},function(err, users){
 			
+			
 			// assign new user as signedInUser
 			utils.signedInUser = users[0];
 			req.session.user = users[0];
 			
-			//console.log("User found.\n"+req.session.user);
+			console.log("User found.\n"+req.session.user);
 			// redirect to homepage
 			res.redirect("/");
 		});
