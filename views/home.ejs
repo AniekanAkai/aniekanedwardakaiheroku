@@ -75,6 +75,11 @@
 			background-color: #dddddd;
 		}
 		
+		articles{
+			text-align: center
+			font-family: arial, sans-serif
+		}
+		
 		label, input { display:block; }
 		input.text { margin-bottom:12px; width:95%; padding: .4em; }
 		fieldset { padding:0; border:0; margin-top:25px; }
@@ -93,6 +98,8 @@
 	<% } %>	
 	</header>
 	
+	
+	
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <% sections.forEach(function(s){%>
@@ -107,7 +114,21 @@
 <span onclick="openNav()"><img src="./static/images/openSidebar.png" width="30" height="30"> </span>
 	
 	<center>
-	<h1>DAS GUT</h1>
+		<h1>DAS GUT</h1>
+		<div id="articles" class="articles">			
+			<button id="newArticle">
+			<img src="./static/images/addSection.png" width="50" height="50">
+			</button>			
+		</div>
+		<% articles.forEach(function(post){ %>
+			<div id="articles" class="articles">
+			<h3><%=post.title%></h3>
+			<%-post.body%>
+			</div>
+			<hr/>
+		<%});%>
+		
+		
 	</center>
   
 <script>
@@ -127,6 +148,25 @@
 <script>
 $( function() {
 	var dialog, form, newSectionName="";
+	
+	
+	var newArticleDialog = $( "#article-dialog-form" ).dialog({
+      autoOpen: false,
+      height: 400,
+      width: 350,
+      modal: true,
+      buttons: {
+        "OK": addArticle,
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+        form[0].reset();
+      }
+    });
+	
+	
 	
 	dialog = $( "#dialog-form" ).dialog({
       autoOpen: false,
@@ -153,6 +193,11 @@ $( function() {
       dialog.dialog( "open" );
     });
 	
+	
+	$( "#newArticle" ).button().on( "click", function() {
+		newArticleDialog.dialog( "open" );
+	});
+	
 	function addSection() {	
 		var $form = $( "#newSectionForm" )
 		var url = $form.attr( "action" );
@@ -165,6 +210,25 @@ $( function() {
 		console.log(creatorVal);
 		
 		var posting = $.post( url, { name:newSectionName, description:descriptionVal, creator:creatorVal } );
+		
+        dialog.dialog( "close" );
+    }
+	
+	function addArticle() {	
+		var $form = $( "#newArticleForm" );
+		
+		var url = $form.attr( "action" );
+		console.log(url);
+		var title = $form.find("input[name='title']").val();
+		console.log(title);
+		var bodyVal = $form.find("textarea[name='body']").val();
+		console.log(bodyVal);
+		var sectionsListVal = $form.find("input[name='sections']").val();
+		console.log(sectionsListVal);
+		var authorVal = $form.find("input[name='author']").val();
+		console.log(authorVal);
+		
+		var posting = $.post( url, { title:title, body:bodyVal, sections:sectionsListVal, author:authorVal } );
 		
         dialog.dialog( "close" );
     }
@@ -184,6 +248,37 @@ $( function() {
 	  </textarea>
       
       <input type="hidden" name="creator" id="creator" value="<%=currentUser._id%>" class="text ui-widget-content ui-corner-all"/>
+ 
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+	  
+	<% }else{ %>
+      <h3>A user needs to be signed in</h3>
+	  <table>
+	  <tr>
+	  <td><a href="/login">Login</a></td>
+	  <td><a href="/register">Register</a></td>
+	  </tr>
+	  </table>
+	<% } %>
+    </fieldset>
+  </form>
+</div>
+
+<div id="article-dialog-form" title="Add New Article"> 
+  <form method="POST" action="/newArticle" id="newArticleForm">
+    <fieldset>	
+	<% if("name" in currentUser){ %>
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" value="" class="text ui-widget-content ui-corner-all"/>
+	  <br/>
+      <label for="body">Body</label>
+      <textarea name="body" id="body" value="" class="text ui-widget-content ui-corner-all"/>
+	  </textarea>
+	  <br/>
+	  <input type="text" name="sections" id="sections" value="" hint="List the sections(comma-separated) the article would be under." class="text ui-widget-content ui-corner-all"/>
+	  
+      <input type="hidden" name="author" id="author" value="<%=currentUser._id%>" class="text ui-widget-content ui-corner-all"/>
  
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">

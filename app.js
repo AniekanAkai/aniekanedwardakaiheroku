@@ -54,6 +54,8 @@ app.post("/newSection", articleController.newSection);
 
 app.post("/articles/in/:sectionName", articleController.listArticleForSection);
 
+app.post("/newArticle", articleController.createArticle);
+
 app.listen(port, function(err){
 	console.log("listening on %s", port);
 });
