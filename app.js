@@ -34,6 +34,7 @@ app.use(session({secret:"amoeba"}));
 var mongoDBHost = process.env.MONGODB_URI || "localhost";
 mongoose.connect('mongodb://'+mongoDBHost+'/myblog');
 
+
 app.get("/", articleController.home);
 app.post("/login", userController.login);
 app.get("/login", function(req, res){
@@ -54,8 +55,34 @@ app.post("/newSection", articleController.newSection);
 
 app.post("/articles/in/:sectionName", articleController.listArticleForSection);
 
+app.get("/article/:articleName", articleController.showArticle);
+
 app.post("/newArticle", articleController.createArticle);
 
-app.listen(port, function(err){
-	console.log("listening on %s", port);
+app.get("/sendNewArticle/:articleName",  function(req, res){
+	var article = mongoose.model("article");
+	article.findOne({"title":req.params.articleName}, function(err, articleInfo){
+		if(err){
+			console.log("Error occured.");
+			console.log(err);
+			res.send(404);
+		}else{
+			console.log("No Error occured.");
+			console.log(articleInfo);
+			io.sockets.emit('newArticle', articleInfo);
+		}
+	});
 });
+
+app.get("/sendNewSection/:sectionName", function(req, res){
+	io.sockets.emit('addingNewSection', req.params.sectionName);
+});
+
+io.sockets.on('connection',function(socket){
+	console.log("socket connected.");	
+});
+//app.listen(port, function(err){
+	//console.log("listening on %s", port);
+//});
+
+server.listen(process.env.port || 8080);

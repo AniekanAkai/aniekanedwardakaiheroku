@@ -62,7 +62,7 @@ controller.createArticle = [
 		console.log(req.body); 
 		article.create(req.body, function(err, post){
 			if(err) return next(err);//Parameter 1 passed into next() means error occurred.
-			res.redirect("/");
+			res.redirect("/sendNewArticle/"+post.title);
 		});
 	}
 ];
@@ -91,12 +91,43 @@ controller.newSection = [
 		console.log(req.body); 
 		section.create(req.body, function(err, section){
 			if(err) return next(err);//Parameter 1 passed into next() means error occurred.
-			res.redirect("/");
+			console.log(section.name);
+			//io.sockets.emit('addingNewSection', section.name);
+			res.redirect("/sendNewSection/"+section.name);
 		});
 }];
 
 controller.listArticleForSection = [function(req, res){
 
 }];
+
+controller.showArticle = [
+	function(req, res, next){		
+		console.log("Showing a single article");
+		section.find({}, function(err, sects){
+			req.sections = sects;
+			article.findOne({"title":req.params.articleName}, function(err, articleInfo){
+				if(err){
+					console.log("Error occured.");
+					console.log(err);
+					res.send(404);
+				}else{
+					console.log("No Error occured.");
+					console.log(articleInfo);
+					req.article = articleInfo;
+					next();
+				}
+			});
+		});			
+	}, function(req, res, next){
+		if("user" in req.session){
+			console.log("Rendering the single article, with user signed in");
+			res.render("singleArticle", {"currentUser":req.session.user, "sections":req.sections, "post":req.article});
+		}else{
+			console.log("Rendering the single article, with no user signed in");
+			res.render("singleArticle", {"currentUser":{}, "sections":req.sections, "post":req.article});
+		}
+	}
+];
 
 module.exports = controller;

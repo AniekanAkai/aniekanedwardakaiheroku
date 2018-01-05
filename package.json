@@ -4,7 +4,7 @@
   "description": "This application will be my personal blog containing music and technology related thoughts.",
   "main": "app.js",
   "scripts": {
-	"start":"node app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,19 +13,19 @@
   },
   "author": "aakai",
   "license": "ISC",
-  "dependencies":{
-	"express":"*",
-	"mongodb":"*",
-	"morgan":"*",
-	"body-parser":"*",
-	"multer":"*",
-	"ejs":"*",
-	"mongoose":"*",
-	"basic-auth":"*",
-	"express-session":"*",
-	"bcrypt":"*",
-	"socket.io":"*",
-	"winston":"*",
-	"file-system":"*"
+  "dependencies": {
+    "basic-auth": "*",
+    "bcrypt": "*",
+    "body-parser": "*",
+    "ejs": "*",
+    "express": "*",
+    "express-session": "*",
+    "file-system": "*",
+    "mongodb": "*",
+    "mongoose": "*",
+    "morgan": "*",
+    "multer": "*",
+    "socket.io": "^2.0.4",
+    "winston": "*"
   }
 }

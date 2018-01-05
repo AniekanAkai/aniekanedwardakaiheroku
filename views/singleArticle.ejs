@@ -12,7 +12,6 @@
 			margin-top:0px;
 			text-align:right;
 		}
-		
 		.sidenav {
 			height: 100%; /* 100% Full-height */
 			width: 0; /* 0 width - change this with JavaScript */
@@ -81,12 +80,6 @@
 			font-family: arial, sans-serif
 		}
 		
-		.permalink {
-			color:#C0C0C0;
-			text-align:right;
-			font-size: 9px;
-		}
-		
 		label, input { display:block; }
 		input.text { margin-bottom:12px; width:95%; padding: .4em; }
 		fieldset { padding:0; border:0; margin-top:25px; }
@@ -98,56 +91,48 @@
 		<% if("name" in currentUser){ %>
 			<p>Welcome, <%=currentUser.name%><a href="/logout"><font color="red"> Logout</font></a></p>
 		<% }else{ %>
-			<p><a href="/register"><img src="./static/images/Register.png" width="100" height="30"></img></a><a href="/login"><img src="./static/images/Login.png" width="100" height="30"></img></a></p>
+			<p><a href="/register"><img src="../static/images/Register.png" width="100" height="30"></img></a><a href="/login"><img src="../static/images/Login.png" width="100" height="30"></img></a></p>
 		<% } %>		
 	<% }else{ %>
 		<p>You have to <a href="/login">log in</a>!</p>
 	<% } %>	
 	</header>
 	
+	
+	
 <div id="mySidenav" class="sidenav">
-  <button id="newSection">
-	<img src="./static/images/addSection.png" width="30" height="30">
-  </button>
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <% sections.forEach(function(s){%>
 	<a href="/articles/in/<%=s.name%>"><%=s.name%></a>
-  <% }); %>  
+  <% }); %>
+  <button id="newSection">
+	<img src="../static/images/addSection.png" width="30" height="30">
+  </button>
 </div>
 
 <!-- Use any element to open the sidenav -->
-<span onclick="openNav()"><img src="./static/images/openSidebar.png" width="30" height="30"> </span>
+<span onclick="openNav()"><img src="../static/images/openSidebar.png" width="30" height="30"> </span>
 	
 	<center>
 		<a href=".">
-		<img src="./static/images/dasguttitle.png" width="100" height="100">
+		<img src="../static/images/dasguttitle.png" width="100" height="100">
 		</a>
-		<div id="newarticlebutton" class="articles">			
+		<div id="articles" class="articles">			
 			<button id="newArticle">
-			<img src="./static/images/addSection.png" width="50" height="50">
+			<img src="../static/images/addSection.png" width="50" height="50">
 			</button>			
 		</div>
-		<% articles.forEach(function(post){ %>
-			<div id="articles" class="articles">
-				<a href="/article/<%=post.title%>">
-				<h3><%=post.title%></h3>
-				</a>
-				<%-post.body%>					
-			</div>	
-			<div id="permalink" class="permalink">			
-			<a class="permalink" href="/article/<%=post.title%>"> <i>View</i> </a>
-			</div>
-			<hr/>
-		<%});%>
-		
-		
+		<div id="articles" class="articles">
+			<h3><%=post.title%></h3>
+			<%-post.body%>
+		</div>	
+		<hr/>		
 	</center>
   
 <script>
 	/* Set the width of the side navigation to 250px */
 	function openNav() {
-		document.getElementById("mySidenav").style.width = "15%";
-		document.getElementById("mySidenav").style.height = "90%";
+		document.getElementById("mySidenav").style.width = "250px";
 	}
 
 	/* Set the width of the side navigation to 0 */
@@ -155,28 +140,12 @@
 		document.getElementById("mySidenav").style.width = "0";
 	}
 </script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="/socket.io/socket.io.js"></script>
 <script>
 $( function() {
-
-	var dialog, form, newSectionName="";	
-	var socket = io.connect("//localhost:8080");
-	var $sideNav = $("#mySidenav");
-	var $articles = $("#articles");
-	
-	
-	socket.on('addingNewSection', function(section) {
-		console.log("New Section added");
-		$sideNav.append("<a href=/articles/in/"+section+">"+section+"</a>");
-	});
-	
-	socket.on('newArticle',function(post) {
-		$articles.prepend("<div class='articles'><a href='/article/"+post.title+"'><h3>"+post.title+"</h3></a>"+post.body+"</div><div id='permalink' class='permalink'><a class='permalink' href='/article/"+post.title+"'> <i>View</i> </a></div><hr/>");
-	});
-	
+	var dialog, form, newSectionName="";
 	var newArticleDialog = $( "#article-dialog-form" ).dialog({
       autoOpen: false,
       height: 400,
@@ -185,32 +154,39 @@ $( function() {
       buttons: {
         "OK": addArticle,
         Cancel: function() {
-          $(this).dialog("close");
+          dialog.dialog( "close" );
         }
       },
       close: function() {
-        $(this).dialog("close");
+        form[0].reset();
       }
     });
 	
-	var newSectionDialog = $( "#dialog-form" ).dialog({
+	
+	
+	dialog = $( "#dialog-form" ).dialog({
       autoOpen: false,
       height: 400,
       width: 350,
       modal: true,
       buttons: {
         "OK": addSection,
-        "Cancel": function() {
-          $(this).dialog("close");
+        Cancel: function() {
+          dialog.dialog( "close" );
         }
       },
       close: function() {
-       $(this).dialog("close");
+        form[0].reset();
       }
+    });
+	
+	form = dialog.find( "form" ).on( "submit", function( event ) {
+		event.preventDefault();
+		addSection();
     });
  
     $( "#newSection" ).button().on( "click", function() {
-      newSectionDialog.dialog( "open" );
+      dialog.dialog( "open" );
     });
 	
 	
@@ -229,10 +205,9 @@ $( function() {
 		var creatorVal = $form.find("input[name='creator']").val();
 		console.log(creatorVal);
 		
-		
 		var posting = $.post( url, { name:newSectionName, description:descriptionVal, creator:creatorVal } );
 		
-        newSectionDialog.dialog("close");
+        dialog.dialog( "close" );
     }
 	
 	function addArticle() {	
@@ -249,10 +224,9 @@ $( function() {
 		var authorVal = $form.find("input[name='author']").val();
 		console.log(authorVal);
 		
-		
 		var posting = $.post( url, { title:title, body:bodyVal, sections:sectionsListVal, author:authorVal } );
 		
-        newArticleDialog.dialog( "close" );
+        dialog.dialog( "close" );
     }
 });
 </script>
