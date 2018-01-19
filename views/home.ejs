@@ -163,7 +163,7 @@
 $( function() {
 
 	var dialog, form, newSectionName="";	
-	var socket = io.connect("//localhost:8080");
+	var socket = io();
 	var $sideNav = $("#mySidenav");
 	var $articles = $("#articles");
 	
