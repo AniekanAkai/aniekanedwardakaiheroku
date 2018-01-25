@@ -85,4 +85,4 @@ io.sockets.on('connection',function(socket){
 	//console.log("listening on %s", port);
 //});
 
-server.listen(process.env.port || 8080);
+server.listen(port);
