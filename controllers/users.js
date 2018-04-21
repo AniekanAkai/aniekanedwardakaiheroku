@@ -82,7 +82,7 @@ controller.updateUser = [function(req, res, next){
 	},function(req, res, next){
 		if(req.body.submission == "Delete User"){
 			console.log(req.body);
-			res.send(req.body.name + "  will be deleted.");//controller.deleteUser();
+			res.send(req.body.name + "  will be deleted.");
 		}else if(req.body.submission == "Save Changes"){
 			Person.findById(req.param('userId'),function(err,user) {
 				if(err) return next(err);
