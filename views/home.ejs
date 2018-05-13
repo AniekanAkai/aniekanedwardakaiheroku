@@ -87,11 +87,48 @@
 			font-size: 9px;
 		}
 		
+		.deleteAction {
+			color:#C0C0C0;
+			text-align:left;
+			font-size: 9px;
+		}
+		
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+		
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f1f1f1;
+			min-width: 160px;
+			overflow: auto;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+		}
+
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+		}
+		
+		.articleMenuBtn {
+			background-color: #3498DB;
+			color: white;
+			padding: 16px;
+			font-size: 16px;
+			border: none;
+			cursor: pointer;
+		}
+		
 		label, input { display:block; }
 		input.text { margin-bottom:12px; width:95%; padding: .4em; }
 		fieldset { padding:0; border:0; margin-top:25px; }
 		.ui-dialog .ui-state-error { padding: .3em; }
-		
+		.show {display:block;}
 	</style>
 	<header>
 	<% if(currentUser){ %>
@@ -128,19 +165,28 @@
 			</button>			
 		</div>
 		<% articles.forEach(function(post){ %>
-			<div id="articles" class="articles">
-				<a href="/article/<%=post.title%>">
-				<h3><%=post.title%></h3>
-				</a>
-				<%-post.body%>					
-			</div>	
-			<div id="permalink" class="permalink">			
-			<a class="permalink" href="/article/<%=post.title%>"> <i>View</i> </a>
+			<div id="post_<%=post.title%>">
+				<div id="articles" class="articles">
+					<h3>
+						<a href="/article/<%=post.title%>"><%=post.title%></a>
+						<div class="dropdown">
+							<button class="articleMenuBtn" onClick="showMenuOptions('myDropdown<%=post.title%>')">
+								<img src="./static/images/articleMenu.png" width="9" height="15">
+							</button>
+							<div id="myDropdown<%=post.title%>" class="dropdown-content">
+								<a href="#edit">Edit</a>
+								<a href="/deleteArticle/<%=post.title%>">Delete</a>
+							</div>
+						</div>
+					</h3>
+					<%-post.body%>					
+				</div>	
+				<div id="permalink" class="permalink">
+					<a class="permalink" href="/article/<%=post.title%>"> <i>View</i> </a>
+				</div>
+				<hr/>
 			</div>
-			<hr/>
-		<%});%>
-		
-		
+		<%});%>		
 	</center>
   
 <script>
@@ -154,11 +200,19 @@
 	function closeNav() {
 		document.getElementById("mySidenav").style.width = "0";
 	}
+
+	/*Opening menu options for the article with the corresponding menu button.*/
+	function showMenuOptions(id){
+		console.log("Direct Call " + id);
+		document.getElementById(id).classList.toggle("show");
+	};
+
 </script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+
 <script>
 $( function() {
 
@@ -174,7 +228,20 @@ $( function() {
 	});
 	
 	socket.on('newArticle',function(post) {
-		$articles.prepend("<div class='articles'><a href='/article/"+post.title+"'><h3>"+post.title+"</h3></a>"+post.body+"</div><div id='permalink' class='permalink'><a class='permalink' href='/article/"+post.title+"'> <i>View</i> </a></div><hr/>");
+		$articles.prepend("<div id='post_'" + post.title +">"
+		+"<div id='articles' class='articles'>"
+		+"<h3><a href='/article/"+post.title+"'>"+post.title+"</a>"
+		+"<div class='dropdown'>"
+		+"<button class='articleMenuBtn' onClick=\"showMenuOptions('myDropdown"+post.title+"')\"><img src='./static/images/articleMenu.png' width='9' height='15'></button>"
+		+"<div id='myDropdown"+post.title+"' class='dropdown-content'><a href='#edit'>Edit</a> <a href='/deleteArticle/"+post.title+"'>Delete</a></div>"
+		+"</div></h3>"+post.body+"</div>"
+		+"<div id='permalink' class='permalink'><a class='permalink' href='/article/"+post.title+"'> <i>View</i> </a></div><hr/></div>");
+	});
+	
+	socket.on("deleteArticle", function(postTitle){
+		console.log("Remove this article: "+postTitle);
+		var blockToBeRemoved = document.getElementById("post_"+postTitle);
+		blockToBeRemoved.parentNode.removeChild(blockToBeRemoved);
 	});
 	
 	var newArticleDialog = $( "#article-dialog-form" ).dialog({
@@ -247,8 +314,7 @@ $( function() {
 		var sectionsListVal = $form.find("input[name='sections']").val();
 		console.log(sectionsListVal);
 		var authorVal = $form.find("input[name='author']").val();
-		console.log(authorVal);
-		
+		console.log(authorVal);		
 		
 		var posting = $.post( url, { title:title, body:bodyVal, sections:sectionsListVal, author:authorVal } );
 		

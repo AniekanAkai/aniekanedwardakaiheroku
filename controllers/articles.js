@@ -68,9 +68,17 @@ controller.createArticle = [
 ];
 
 
-controller.deleteArticle = [function(req, res){
-	
-}];
+controller.deleteArticle = [
+	function(req, res){
+		article.remove({"title":req.params.articleName}, function(err){
+			if(err){
+				return err;
+			}
+			console.log("Deleting the article: " + req.params.articleName);
+			res.redirect("/removeDeletedArticle/"+req.params.articleName);			
+		});		
+	}
+];
 
 
 controller.editArticle = [function(req, res, next){
