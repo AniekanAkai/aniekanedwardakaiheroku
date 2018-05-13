@@ -75,8 +75,7 @@ controller.deleteArticle = [
 				return err;
 			}
 			console.log("Deleting the article: " + req.params.articleName);
-			res.redirect("/");
-			
+			res.redirect("/removeDeletedArticle/"+req.params.articleName);			
 		});		
 	}
 ];

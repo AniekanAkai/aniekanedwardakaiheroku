@@ -62,26 +62,20 @@ app.get("/article/:articleName", articleController.showArticle);
 
 app.post("/newArticle", articleController.createArticle);
 
-app.get("/deleteArticle/:articleName", function(req, res){
-		article.remove({"title":req.params.articleName}, function(err){
-			if(err){
-				return err;
-			}
-			console.log("Deleting the article: " + req.params.articleName);
-			io.sockets.emit("deleteArticle", req.params.articleName);			
-		});		
+app.get("/deleteArticle/:articleName", articleController.deleteArticle);
+
+app.get("/removeDeletedArticle/:articleName", function(req, res){
+	io.sockets.emit("deleteArticle", req.params.articleName);			
+	console.log("Removed the article: " + req.params.articleName);
 });
 
 app.get("/sendNewArticle/:articleName",  function(req, res){
-	
+	console.log("I just sent new article.....!")
 	article.findOne({"title":req.params.articleName}, function(err, articleInfo){
 		if(err){
-			console.log("Error occured.");
 			console.log(err);
 			res.send(404);
 		}else{
-			console.log("No Error occured.");
-			console.log(articleInfo);
 			io.sockets.emit('newArticle', articleInfo);
 		}
 	});

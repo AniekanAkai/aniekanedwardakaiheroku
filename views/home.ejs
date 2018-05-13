@@ -228,7 +228,14 @@ $( function() {
 	});
 	
 	socket.on('newArticle',function(post) {
-		$articles.prepend("<div class='articles'><a href='/article/"+post.title+"'><h3>"+post.title+"</h3></a>"+post.body+"</div><div id='permalink' class='permalink'><a class='permalink' href='/article/"+post.title+"'> <i>View</i> </a></div><hr/>");
+		$articles.prepend("<div id='post_'" + post.title +">"
+		+"<div id='articles' class='articles'>"
+		+"<h3><a href='/article/"+post.title+"'>"+post.title+"</a>"
+		+"<div class='dropdown'>"
+		+"<button class='articleMenuBtn' onClick=\"showMenuOptions('myDropdown"+post.title+"')\"><img src='./static/images/articleMenu.png' width='9' height='15'></button>"
+		+"<div id='myDropdown"+post.title+"' class='dropdown-content'><a href='#edit'>Edit</a> <a href='/deleteArticle/"+post.title+"'>Delete</a></div>"
+		+"</div></h3>"+post.body+"</div>"
+		+"<div id='permalink' class='permalink'><a class='permalink' href='/article/"+post.title+"'> <i>View</i> </a></div><hr/></div>");
 	});
 	
 	socket.on("deleteArticle", function(postTitle){
