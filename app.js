@@ -70,7 +70,6 @@ app.get("/removeDeletedArticle/:articleName", function(req, res){
 });
 
 app.get("/sendNewArticle/:articleName",  function(req, res){
-	console.log("I just sent new article.....!")
 	article.findOne({"title":req.params.articleName}, function(err, articleInfo){
 		if(err){
 			console.log(err);

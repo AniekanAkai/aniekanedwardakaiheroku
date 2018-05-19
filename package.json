@@ -25,6 +25,7 @@
     "mongoose": "*",
     "morgan": "*",
     "multer": "*",
+    "redis": "^2.8.0",
     "socket.io": "^2.0.4",
     "winston": "*"
   }
