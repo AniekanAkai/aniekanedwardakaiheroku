@@ -31,9 +31,18 @@ app.set('view engine', 'ejs');
 
 app.use(session({secret:"amoeba"}));
 
-var mongoDBHost = process.env.MONGODB_URI || "localhost";
-mongoose.connect('mongodb://'+mongoDBHost+'/myblog');
+var CONFIG = require('./conf/systemconfig.json');
 
+var mongoDBHost = CONFIG.databaseHost || "localhost";
+var mongoDBPort = CONFIG.databasePort || 27017;
+console.log(mongoDBHost);
+
+// mongodb://adminAkaiHeroku1:iwillchange1991@ds141175.mlab.com:41175/heroku_25qfl71w
+if(mongoDBHost == "localhost"){
+	mongoose.connect('mongodb://localhost:'+CONFIG.databasePort+'/'+CONFIG.databaseName);//'/myblog');
+}else{
+	mongoose.connect('mongodb://'+CONFIG.databaseUser+':'+CONFIG.databasePassword+"@"+mongoDBHost+":"+mongoDBPort+"/"+CONFIG.databaseName);//'/myblog');
+}
 var article = mongoose.model("article");
 
 app.get("/", articleController.home);

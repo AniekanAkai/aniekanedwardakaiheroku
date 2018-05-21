@@ -22,13 +22,13 @@ controller.home = [
 		});	
 	}, 
 	function(req, res, next){
-		article.find({}, function(err, posts){
+		article.find({}).sort({createdAt:'desc'}).exec(function(err, posts){
+			posts = posts
 			if("user" in req.session){
 				console.log("Homepage, signed in user in session:\n"+req.session.user);
 				req.sections.forEach(function(s){
 					console.log(s.name);
-				});				
-				//console.log("Homepage, signed in user in utils: \n"+utils.signedInUser);
+				});	
 				res.render("home", {"currentUser":req.session.user, "sections":req.sections, "articles":posts});
 			}else{
 				console.log("Homepage, signed in user: \n"+{});
