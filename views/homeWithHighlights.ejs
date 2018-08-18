@@ -20,41 +20,45 @@
 			position:fixed;
 		}
 
-		/* The navigation menu links */
-		.sidenav a {
-			padding: 8px 8px 8px 32px;
-			text-decoration: none;
-			font-size: 25px;
-			color: #818181;
-			display: block;
-			transition: 0.3s
+		body, html {
+		  width: 100%;
+		  height: 100%;
+		  margin: 0;
 		}
 
-		/* When you mouse over the navigation links, change their color */
-		.sidenav a:hover, .offcanvas a:focus{
-			color: #f1f1f1;
+		.container {
+		  width: 100%;
+		  height: 100%;
+		}
+		
+		.leftSection {
+			width: 25%;
+			height: 100%;
+			float: left;
+			border-collapse: collapse;
 		}
 
-		/* Position and style the close button (top right corner) */
-		.sidenav .closebtn {
-			position: absolute;
-			top: 0;
-			right: 25px;
-			font-size: 36px;
-			margin-left: 50px;
+		.centerSection {
+			width: 50%;
+			height: 100%;
+			float: left;
+			border-collapse: collapse;
 		}
 
+		.rightSection {
+			width: 25%;
+			height: 100%;
+			position: relative;
+			float: right;
+			border-collapse: collapse;
+		}
+		
 		/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 		#main {
 			transition: margin-left .5s;
 			padding: 20px;
 		}
 
-		/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-		@media screen and (max-height: 450px) {
-			.sidenav {padding-top: 15px;}
-			.sidenav a {font-size: 18px;}
-		}
 		table {
 			font-family: arial, sans-serif;
 			border-collapse: collapse;
@@ -95,8 +99,8 @@
 		.dropdown-content {
 			display: none;
 			position: absolute;
-			background-color: #f1f1f1;
-			min-width: 160px;
+			background-color: white;
+			min-width: 100px;
 			overflow: auto;
 			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 			z-index: 1;
@@ -110,10 +114,15 @@
 		}
 		
 		.articleMenuBtn {
-			color: white;
-			padding: 16px;
-			font-size: 16px;
+		    background-color: white;
 			border: none;
+			color: green;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
 			cursor: pointer;
 		}
 		
@@ -139,42 +148,50 @@
 	</span>
 	</div>
 	
-	<center>
-		<% if(currentUser){ %>
-			<% if("name" in currentUser){ %>
-				<div id="newarticlebutton" class="articles">			
-					<button id="newArticle">
-					<img src="./static/images/addSection.png" width="50" height="50">
-					</button>
-				</div>
-			<% } %>
-		<% } %>
-		<% var count=0; %>
+	<div class="container"> 
+		<div class="leftSection">
+			<!--hr/>
+			<b>Left Section</b-->
+		</div>
 		
-			<div id="post_<%=articles.title%>">
-				<div id="articles" class="articles">
-					<h3>
-						<a href="/article/<%=articles.title%>"><%=articles.title%></a>
-						<div class="dropdown">
-							<button class="articleMenuBtn" onClick="showMenuOptions('myDropdown<%=articles.title%>')">
-								<img src="./static/images/articleMenu.png" width="9" height="15">
-							</button>
-							<div id="myDropdown<%=articles.title%>" class="dropdown-content">
-								<a href="#edit">Edit</a>
-								<a href="/deleteArticle/<%=articles.title%>">Delete</a>
+		<div class="centerSection">
+			<% if(currentUser){ %>
+				<% if("name" in currentUser){ %>
+					<div id="newarticlebutton" class="articles">			
+						<button id="newArticle">
+						<img src="./static/images/addSection.png" width="50" height="50">
+						</button>
+					</div>
+				<% } %>
+			<% } %>
+			<% var count=0; %>			
+				<div id="post_<%=articles.title%>">
+					<div id="articles" class="articles">
+						<h3>
+							<a href="/article/<%=articles.title%>"><%=articles.title%></a>
+							<div class="dropdown">
+								<button class="articleMenuBtn" onClick="showMenuOptions('myDropdown<%=articles.title%>')">
+									<img src="./static/images/articleMenu.png" width="9" height="15">
+								</button>
+								<div id="myDropdown<%=articles.title%>" class="dropdown-content">
+									<a href="#edit"><img src="./static/images/editButton.png" width="30" height="15"></a>
+									<a href="/deleteArticle/<%=articles.title%>"><img src="./static/images/deleteButton.png" width="30" height="15"></a>
+								</div>
 							</div>
-						</div>
-					</h3>
-					<%-articles.body%>					
-				</div>	
-				<div id="permalink" class="permalink">
-					<a class="permalink" href="/article/<%=articles.title%>"> <i>View</i> </a>
+						</h3>
+						<%-articles.body%>					
+					</div>	
+					<div id="permalink" class="permalink">
+						<a class="permalink" href="/article/<%=articles.title%>"> <i>View</i> </a>
+					</div>
+					<hr/>
 				</div>
-				<hr/>
-			</div>
-			
-	</center>
-  
+		</div>
+		
+		<div class="rightSection">	
+			<iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=204493737/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/" seamless><a href="http://feraltrash.bandcamp.com/album/trashfiction">Trashfiction by Feral Trash</a></iframe>
+		</div>
+  </div>
 <script>
 	/* Set the width of the side navigation to 250px */
 	function openNav() {

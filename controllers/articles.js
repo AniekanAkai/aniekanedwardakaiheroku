@@ -22,6 +22,30 @@ controller.home = [
 		});	
 	}, 
 	function(req, res, next){
+		article.findOne({}).sort({createdAt:'asc'}).exec(function(err, posts){
+			posts = posts
+			if("user" in req.session){
+				console.log("Homepage, signed in user in session:\n"+req.session.user);
+				req.sections.forEach(function(s){
+					console.log(s.name);
+				});	
+				res.render("homeWithHighlights", {"currentUser":req.session.user, "sections":req.sections, "articles":posts});
+			}else{
+				console.log("Homepage, signed in user: \n"+{});
+				res.render("homeWithHighlights", {"currentUser":{}, "sections":req.sections, "articles":posts});
+			}
+		});
+	}
+];
+
+controller.listAllArticles = [
+	function(req, res, next){
+		section.find({}, function(err, sects){
+			req.sections = sects;
+			next();
+		});	
+	}, 
+	function(req, res, next){
 		article.find({}).sort({createdAt:'desc'}).exec(function(err, posts){
 			posts = posts
 			if("user" in req.session){
@@ -29,10 +53,10 @@ controller.home = [
 				req.sections.forEach(function(s){
 					console.log(s.name);
 				});	
-				res.render("home", {"currentUser":req.session.user, "sections":req.sections, "articles":posts});
+				res.render("listArticles", {"currentUser":req.session.user, "sections":req.sections, "articles":posts});
 			}else{
 				console.log("Homepage, signed in user: \n"+{});
-				res.render("home", {"currentUser":{}, "sections":req.sections, "articles":posts});
+				res.render("listArticles", {"currentUser":{}, "sections":req.sections, "articles":posts});
 			}
 		});
 	}

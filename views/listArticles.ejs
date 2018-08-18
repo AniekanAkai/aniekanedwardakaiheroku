@@ -1,5 +1,5 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	 <style>
+	 <style>			
 		a {
 			text-decoration: none;
 		}		
@@ -150,29 +150,32 @@
 			<% } %>
 		<% } %>
 		<% var count=0; %>
-		
-			<div id="post_<%=articles.title%>">
+		<% articles.forEach(function(post){ %>
+			<% if(count<10){%>
+			<div id="post_<%=post.title%>">
 				<div id="articles" class="articles">
 					<h3>
-						<a href="/article/<%=articles.title%>"><%=articles.title%></a>
+						<a href="/article/<%=post.title%>"><%=post.title%></a>
 						<div class="dropdown">
-							<button class="articleMenuBtn" onClick="showMenuOptions('myDropdown<%=articles.title%>')">
+							<button class="articleMenuBtn" onClick="showMenuOptions('myDropdown<%=post.title%>')">
 								<img src="./static/images/articleMenu.png" width="9" height="15">
 							</button>
-							<div id="myDropdown<%=articles.title%>" class="dropdown-content">
+							<div id="myDropdown<%=post.title%>" class="dropdown-content">
 								<a href="#edit">Edit</a>
-								<a href="/deleteArticle/<%=articles.title%>">Delete</a>
+								<a href="/deleteArticle/<%=post.title%>">Delete</a>
 							</div>
 						</div>
 					</h3>
-					<%-articles.body%>					
+					<%-post.body%>					
 				</div>	
 				<div id="permalink" class="permalink">
-					<a class="permalink" href="/article/<%=articles.title%>"> <i>View</i> </a>
+					<a class="permalink" href="/article/<%=post.title%>"> <i>View</i> </a>
 				</div>
 				<hr/>
 			</div>
-			
+			<% } %>
+			<% count++; %>
+		<%});%>		
 	</center>
   
 <script>
