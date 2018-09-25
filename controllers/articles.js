@@ -22,7 +22,7 @@ controller.home = [
 		});	
 	}, 
 	function(req, res, next){
-		article.findOne({}).sort({createdAt:'asc'}).exec(function(err, posts){
+		article.findOne({}).sort({createdAt:'desc'}).exec(function(err, posts){
 			posts = posts
 			if("user" in req.session){
 				console.log("Homepage, signed in user in session:\n"+req.session.user);
@@ -105,9 +105,7 @@ controller.deleteArticle = [
 ];
 
 
-controller.editArticle = [function(req, res, next){
-	
-}];
+controller.editArticle = [function(req, res, next){}];
 	
 controller.newSection = [
 	function(req,res,next) {
@@ -127,11 +125,10 @@ controller.newSection = [
 			//io.sockets.emit('addingNewSection', section.name);
 			res.redirect("/sendNewSection/"+section.name);
 		});
-}];
+	}
+];
 
-controller.listArticleForSection = [function(req, res){
-
-}];
+controller.listArticleForSection = [function(req, res){}];
 
 controller.showArticle = [
 	function(req, res, next){		
