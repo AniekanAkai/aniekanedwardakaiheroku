@@ -74,11 +74,12 @@
 			background-color: #dddddd;
 		}
 		
-		articles{
-			text-align: center
-			font-family: arial, sans-serif
+		.articles{
+			text-align: center;
+			font-family: arial, sans-serif;
+			background-color: white;
 		}
-				
+		
 		.permalink {
 			color:#C0C0C0;
 			text-align:right;
@@ -149,13 +150,7 @@
 	</div>
 	
 	<div class="container"> 
-		<div class="leftSection">
-			<!--hr/>
-			<b>Left Section</b-->
-		</div>
-		
-		<div class="centerSection">
-			<% if(currentUser){ %>
+		<% if(currentUser){ %>
 				<% if("name" in currentUser){ %>
 					<div id="newarticlebutton" class="articles">			
 						<button id="newArticle">
@@ -164,6 +159,11 @@
 					</div>
 				<% } %>
 			<% } %>
+		<div class="leftSection">
+			
+		</div>
+		
+		<div class="centerSection">			
 			<% var count=0; %>			
 				<div id="post_<%=articles.title%>">
 					<div id="articles" class="articles">
@@ -179,17 +179,17 @@
 								</div>
 							</div>
 						</h3>
-						<%-articles.body%>					
-					</div>	
-					<div id="permalink" class="permalink">
-						<a class="permalink" href="/article/<%=articles.title%>"> <i>View</i> </a>
-					</div>
+						<%-articles.body%>
+						<div id="permalink" class="permalink">
+							<a class="permalink" href="/article/<%=articles.title%>"> <i>View</i> </a>
+						</div>
+					</div>						
 					<hr/>
 				</div>
 		</div>
 		
-		<div class="rightSection">	
-			<iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=204493737/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/" seamless><a href="http://feraltrash.bandcamp.com/album/trashfiction">Trashfiction by Feral Trash</a></iframe>
+		<div class="rightSection">
+			<iframe style="border: 0; width: 300px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=204493737/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/" seamless><a href="http://feraltrash.bandcamp.com/album/trashfiction">Trashfiction by Feral Trash</a></iframe>
 		</div>
   </div>
 <script>
