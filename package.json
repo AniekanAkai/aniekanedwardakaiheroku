@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This application will be my personal blog containing music and technology related thoughts.",
   "main": "app.js",
+"engines":{
+	"node":"9.3.0"
+},
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
