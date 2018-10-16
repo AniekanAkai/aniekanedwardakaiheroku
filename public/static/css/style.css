@@ -12,7 +12,6 @@
 			width: 100%;
 		}
 
-
 		.loginWelcome{
 			float:right;	
 		}
@@ -72,12 +71,28 @@
 			background-color: #dddddd;
 		}
 		
-		.articles{
+		.articles {
 			text-align: center;
 			font-family: arial, sans-serif;
 			background-color: white;
 		}
 		
+		.addArticleButton {
+			text-align:center;
+			background-color:white;
+			border:0;
+			color:green;
+		}
+		
+		.addArticleButton:hover {
+			background-color: white;
+			color: white;	
+			border:0;
+		}
+		
+		textarea {
+			width: 100%;
+		}
 		
 		.permalink {
 			color:#C0C0C0;
@@ -123,7 +138,7 @@
 			display: inline-block;
 			font-size: 16px;
 			margin: 4px 2px;
-			cursor: pointer;
+			cursor: pointer;			
 		}
 		
 		label, input { display:block; }
