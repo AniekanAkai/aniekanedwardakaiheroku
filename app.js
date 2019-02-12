@@ -42,12 +42,10 @@ var mongoDBHost = CONFIG.databaseHost || "localhost";
 var mongoDBPort = CONFIG.databasePort || 27017;
 console.log(mongoDBHost);
 
-// mongodb://adminAkaiHeroku1:iwillchange1991@ds141175.mlab.com:41175/heroku_25qfl71w
-if(mongoDBHost == "localhost"){
-	//mongoose.connect('mongodb://localhost:'+CONFIG.databasePort+'/'+CONFIG.databaseName);//'/myblog');
+if(mongoDBHost == "localhost"){	
 	mongoose.connect('mongodb://localhost:27017/myblog');
 } else {
-	mongoose.connect('mongodb://'+CONFIG.databaseUser+':'+CONFIG.databasePassword+"@"+mongoDBHost+":"+mongoDBPort+"/"+CONFIG.databaseName);//'/myblog');
+	mongoose.connect('mongodb://'+CONFIG.databaseUser+':'+CONFIG.databasePassword+"@"+mongoDBHost+":"+mongoDBPort+"/"+CONFIG.databaseName);
 }
 var article = mongoose.model("article");
 var person = mongoose.model("user");
