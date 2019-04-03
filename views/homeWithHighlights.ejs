@@ -25,15 +25,19 @@
 					<div id="articles" class="articles">
 						<h3>
 							<a href="/article/<%=articles.title%>"><%=articles.title%></a>
-							<div class="dropdown">
-								<button class="articleMenuBtn" onClick="showMenuOptions('myDropdown<%=articles.title%>')">
-									<img src="./static/images/articleMenu.png" width="9" height="15">
-								</button>
-								<div id="myDropdown<%=articles.title%>" class="dropdown-content">
-									<a href="#edit"><img src="./static/images/editButton.png" width="30" height="15"></a>
-									<a href="/deleteArticle/<%=articles.title%>"><img src="./static/images/deleteButton.png" width="30" height="15"></a>
-								</div>
-							</div>
+							<% if(currentUser){ %>
+								<% if("name" in currentUser){ %>
+									<div class="dropdown">
+										<button class="articleMenuBtn" onClick="showMenuOptions('myDropdown<%=articles.title%>')">
+											<img src="./static/images/articleMenu.png" width="9" height="15">
+										</button>
+										<div id="myDropdown<%=articles.title%>" class="dropdown-content">
+											<a href="#edit"><img src="./static/images/editButton.png" width="30" height="15"></a>
+											<a href="/deleteArticle/<%=articles.title%>"><img src="./static/images/deleteButton.png" width="30" height="15"></a>
+										</div>
+									</div>
+								<% } %>
+							<% } %>
 						</h3>
 						<%-articles.body%>
 						<div id="permalink" class="permalink">

@@ -22,17 +22,22 @@ controller.home = [
 		});	
 	}, 
 	function(req, res, next){
-		article.findOne({}).sort({createdAt:'desc'}).exec(function(err, posts){
-			posts = posts
+		article.find({}).sort({createdAt:'desc'}).exec(function(err, posts){
+			
+			console.log(posts);
+			if(err){
+				console.log(err);
+				return err;
+			}
 			if("user" in req.session){
 				console.log("Homepage, signed in user in session:\n"+req.session.user);
 				req.sections.forEach(function(s){
 					console.log(s.name);
 				});	
-				res.render("homeWithHighlights", {"currentUser":req.session.user, "sections":req.sections, "articles":posts});
+				res.render("homeWithHighlights", {"currentUser":req.session.user, "sections":req.sections, "articles":posts[0]});
 			}else{
 				console.log("Homepage, signed in user: \n"+{});
-				res.render("homeWithHighlights", {"currentUser":{}, "sections":req.sections, "articles":posts});
+				res.render("homeWithHighlights", {"currentUser":{}, "sections":req.sections, "articles":posts[0]});
 			}
 		});
 	}
@@ -64,11 +69,13 @@ controller.listAllArticles = [
 
 controller.createArticle = [
 	function(req,res,next) {
-		console.log("Adding new article.")
-		if("title" in req.body && req.body.title !== '') {			
-			next();
-		} else {
-			res.send(400);
+		if("user" in req.session){
+			console.log("Adding new article.")
+			if("title" in req.body && req.body.title !== '') {			
+				next();
+			} else {
+				res.send(400);
+			}
 		}
 		//function to validate that the todo isn't empty
 	},
@@ -94,13 +101,15 @@ controller.createArticle = [
 
 controller.deleteArticle = [
 	function(req, res){
-		article.remove({"title":req.params.articleName}, function(err){
-			if(err){
-				return err;
-			}
-			console.log("Deleting the article: " + req.params.articleName);
-			res.redirect("/removeDeletedArticle/"+req.params.articleName);			
-		});		
+		if("user" in req.session){
+			article.remove({"title":req.params.articleName}, function(err){
+				if(err){
+					return err;
+				}
+				console.log("Deleting the article: " + req.params.articleName);
+				res.redirect("/removeDeletedArticle/"+req.params.articleName);			
+			});		
+		}
 	}
 ];
 
