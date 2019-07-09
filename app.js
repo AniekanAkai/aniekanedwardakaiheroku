@@ -22,6 +22,7 @@ require("./models/articles");
 
 var userController = require("./controllers/users");
 var articleController = require("./controllers/articles");
+var appController = require("./controllers/app");
 //var sectionController = require("./controllers/sections");
 
 var utils = require("./utility");	
@@ -100,6 +101,8 @@ app.get("/sendNewArticle/:articleName",  function(req, res){
 app.get("/sendNewSection/:sectionName", function(req, res){
 	io.sockets.emit('addingNewSection', req.params.sectionName);
 });
+
+app.get("/app", appController.start);
 
 io.sockets.on('connection',function(socket){
 	console.log("socket connected.");	

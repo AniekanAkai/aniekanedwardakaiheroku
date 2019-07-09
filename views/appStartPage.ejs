@@ -1,0 +1,79 @@
+<div id="root"></div>
+<script src="https://unpkg.com/react@16.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16.3.1/umd/react-dom.development.js"></script>
+<!--
+The JSX code needs to be transpiled and into the React calls. Instead of using a build system with a webpack,
+babel is used here to perform this action in the browser.
+-->
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+<script src="https://unpkg.com/prop-types@15.6.0/index.js"></script>
+<script src="https://connect.soundcloud.com/sdk/sdk-3.3.2.js"></script>
+<script type="text/babel">
+	SC.initialize({
+	  client_id: 'MpLVGIOGWboHqGT3WePdQvUOVd0sswgq'
+	});
+	var theSearchResults = [];
+	var track_url = "";
+	class NameForm extends React.Component{
+		constructor(trackName){
+			super();
+			
+			this.state = {artistName:"", trackName:"", searchResults:theSearchResults};
+		}
+		
+		searchSubmit = event => {
+			event.preventDefault();
+			console.log(event.target.elements.thisTrackname.value);
+			console.log("ref value: "+this.trackInputNode.value);
+			console.log("ref value: "+this.artistInputNode.value);
+			
+			this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value});
+			let artistValue = this.artistInputNode.value;
+			// find all sounds of buskers
+			SC.get('/tracks', {q:this.state.trackName}).then(
+				function(tracks) {
+				  console.log("Searching");
+				  console.log(artistValue);
+				  
+				  tracks.forEach(function(track){
+					console.log(track.user.username);
+					if(track.user.username==artistValue){
+						console.log("Found it!!");
+						theSearchResults.push(track);
+					};
+				  });				  
+				}
+			);
+			if(theSearchResults.length>0){
+				this.setState({searchResults:theSearchResults});
+			}
+		}
+		
+		render(){
+			return (<div>
+						<form onSubmit={this.searchSubmit}>
+							<label>Find song:</label>							
+							<input type="text" name="thisTrackname" ref={node => {this.trackInputNode = node}}/>
+							<input type="text" name="thisArtistName" ref={node => {this.artistInputNode = node}}/>
+							<input type="submit"/>							
+						</form>
+						<div><b>Search results for </b><span>{(this.state.trackName)?this.state.trackName:"___"}</span> by {(this.state.artistName)?this.state.artistName:"___"}</div>
+						<hr/>
+						<div>{(this.state.searchResults.length>0)?this.state.searchResults[0].stream_url:"..."}</div>
+						{track_url = (this.state.searchResults.length>0)?this.state.searchResults[0].id:"0"}
+						<iframe width="100%" height="166" 
+						scrolling="no" frameborder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+track_url+"&amp;color=ff5500"}>
+						</iframe>
+					</div>
+			);
+		}
+	}	
+	var rootElement = document.getElementById("root");
+	var element = <NameForm/>
+	
+	ReactDOM.render(element, rootElement);
+	SC.oEmbed(track_url, { auto_play: true }).then(function(oEmbed) {
+						  console.log('oEmbed response: ', oEmbed);
+						  
+						});
+</script>
