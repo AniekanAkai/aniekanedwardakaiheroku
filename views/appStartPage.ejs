@@ -8,45 +8,102 @@ babel is used here to perform this action in the browser.
 <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
 <script src="https://unpkg.com/prop-types@15.6.0/index.js"></script>
 <script src="https://connect.soundcloud.com/sdk/sdk-3.3.2.js"></script>
+<!--script src="fetch.umd.js"></script-->
 <script type="text/babel">
 	SC.initialize({
 	  client_id: 'MpLVGIOGWboHqGT3WePdQvUOVd0sswgq'
 	});
 	var theSearchResults = [];
 	var track_url = "";
+
 	class NameForm extends React.Component{
 		constructor(trackName){
 			super();
-			
 			this.state = {artistName:"", trackName:"", searchResults:theSearchResults};
 		}
+
+		populateSearchResults(tracks, artistValue){
+			tracks.collection.forEach(function(track){
+			 	// console.log(track.user.username);
+			 	if(track.user.username.toUpperCase()==artistValue.toUpperCase()){
+			 		console.log("Found it!!");
+			 		theSearchResults.push(track);
+			 	}
+			});
+		}
 		
+		findTrackInTracks(tracks, artistValue){			
+			this.populateSearchResults(tracks, artistValue);			
+			if(theSearchResults.length==0){
+				let searchedTrack = this.state.trackName;
+				if(tracks.next_href){
+					console.log(tracks.next_href+searchedTrack);
+					fetch(tracks.next_href+searchedTrack)
+						.then(function(moreTracks){
+							if (!moreTracks.ok) {
+								throw new Error("HTTP error, status = " + response.status);
+							}
+							console.log(moreTracks);
+							return moreTracks.json();
+						})
+						.then(function(moreTracksJSON){
+							if(moreTracksJSON){
+								console.log("Next: "+moreTracksJSON.next_href+searchedTrack);
+							}
+							// findTrackInTracks(moreTracksJSON, artistValue);
+						});
+				} else {
+					console.log("no more results!");
+				}
+			} else {
+				this.setState({searchResults:theSearchResults});
+			}
+		}
+		
+		getAllTheSearchResults(){
+			var foundTrackListNode;
+			let artistValue = this.state.artistName;
+			do{
+					SC.get('/tracks', {limit:100, linked_partitioning:1, q:this.state.trackName})
+					.then(
+						(tracks)=> {
+							console.log("Searching");
+							console.log(artistValue);
+							console.log(tracks);
+							foundTrackListNode = tracks;
+							this.findTrackInTracks(foundTrackListNode, artistValue);
+						}
+					);
+				}while(theSearchResults==0 && foundTrackListNode);
+		}
+
+
 		searchSubmit = event => {
 			event.preventDefault();
 			console.log(event.target.elements.thisTrackname.value);
 			console.log("ref value: "+this.trackInputNode.value);
 			console.log("ref value: "+this.artistInputNode.value);
 			
-			this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value});
-			let artistValue = this.artistInputNode.value;
+			
+			// let artistValue = this.artistInputNode.value;
+			// var foundTrackListNode;
+			// this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value});
 			// find all sounds of buskers
-			SC.get('/tracks', {q:this.state.trackName}).then(
-				function(tracks) {
-				  console.log("Searching");
-				  console.log(artistValue);
-				  
-				  tracks.forEach(function(track){
-					console.log(track.user.username);
-					if(track.user.username==artistValue){
-						console.log("Found it!!");
-						theSearchResults.push(track);
-					};
-				  });				  
-				}
-			);
-			if(theSearchResults.length>0){
-				this.setState({searchResults:theSearchResults});
-			}
+			// "https://api.soundcloud.com/tracks?linked_partitioning=1&client_id=MpLVGIOGWboHqGT3WePdQvUOVd0sswgq&offset=100&q=buskers&limit=100"
+			// SC.get('/tracks', {limit:100, linked_partitioning:1, q:this.state.trackName}).then(
+			// 	(tracks)=> {
+			// 		console.log("Searching");
+			// 		console.log(artistValue);
+			// 		console.log(tracks);
+			// 		foundTrackListNode = tracks;
+			// 		this.findTrackInTracks(foundTrackListNode, artistValue);
+			// 	}
+			// );
+			
+			this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.getAllTheSearchResults);
+			// if(theSearchResults.length>0){
+			// this.setState({searchResults:theSearchResults});
+			// }			
 		}
 		
 		render(){
@@ -62,7 +119,7 @@ babel is used here to perform this action in the browser.
 						<div>{(this.state.searchResults.length>0)?this.state.searchResults[0].stream_url:"..."}</div>
 						{track_url = (this.state.searchResults.length>0)?this.state.searchResults[0].id:"0"}
 						<iframe width="100%" height="166" 
-						scrolling="no" frameborder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+track_url+"&amp;color=ff5500"}>
+						scrolling="no" frameBorder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+track_url+"&amp;color=ff5500"}>
 						</iframe>
 					</div>
 			);
@@ -72,8 +129,5 @@ babel is used here to perform this action in the browser.
 	var element = <NameForm/>
 	
 	ReactDOM.render(element, rootElement);
-	SC.oEmbed(track_url, { auto_play: true }).then(function(oEmbed) {
-						  console.log('oEmbed response: ', oEmbed);
-						  
-						});
+	
 </script>
