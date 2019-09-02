@@ -19,7 +19,7 @@ babel is used here to perform this action in the browser.
 	class NameForm extends React.Component{
 		constructor(trackName){
 			super();
-			this.state = {artistName:"", trackName:"", searchResults:theSearchResults};
+			this.state = {artistName:"", trackName:"", searchResults:theSearchResults, trackUrl:"", trackId:0};
 		}
 
 		populateSearchResults(tracks, artistValue){
@@ -74,36 +74,27 @@ babel is used here to perform this action in the browser.
 							this.findTrackInTracks(foundTrackListNode, artistValue);
 						}
 					);
-				}while(theSearchResults==0 && foundTrackListNode);
+			}while(theSearchResults==0 && foundTrackListNode);
+			this.updateTrackURL();
 		}
 
+		updateTrackURL(){
+			var latestIndex =this.state.searchResults.length-1; 
+			var track_url = (latestIndex>=0)?this.state.searchResults[latestIndex].stream_url:"...";
+			var track_id = (latestIndex>=0)?this.state.searchResults[latestIndex].id:"0";
+			console.log(track_url);
+			console.log(track_id);
+			this.setState({trackUrl:track_url});
+			this.setState({trackId:track_id});
+		}
 
 		searchSubmit = event => {
 			event.preventDefault();
 			console.log(event.target.elements.thisTrackname.value);
 			console.log("ref value: "+this.trackInputNode.value);
 			console.log("ref value: "+this.artistInputNode.value);
-			
-			
-			// let artistValue = this.artistInputNode.value;
-			// var foundTrackListNode;
-			// this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value});
-			// find all sounds of buskers
-			// "https://api.soundcloud.com/tracks?linked_partitioning=1&client_id=MpLVGIOGWboHqGT3WePdQvUOVd0sswgq&offset=100&q=buskers&limit=100"
-			// SC.get('/tracks', {limit:100, linked_partitioning:1, q:this.state.trackName}).then(
-			// 	(tracks)=> {
-			// 		console.log("Searching");
-			// 		console.log(artistValue);
-			// 		console.log(tracks);
-			// 		foundTrackListNode = tracks;
-			// 		this.findTrackInTracks(foundTrackListNode, artistValue);
-			// 	}
-			// );
-			
 			this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.getAllTheSearchResults);
-			// if(theSearchResults.length>0){
-			// this.setState({searchResults:theSearchResults});
-			// }			
+			this.updateTrackURL();
 		}
 		
 		render(){
@@ -116,10 +107,9 @@ babel is used here to perform this action in the browser.
 						</form>
 						<div><b>Search results for </b><span>{(this.state.trackName)?this.state.trackName:"___"}</span> by {(this.state.artistName)?this.state.artistName:"___"}</div>
 						<hr/>
-						<div>{(this.state.searchResults.length>0)?this.state.searchResults[0].stream_url:"..."}</div>
-						{track_url = (this.state.searchResults.length>0)?this.state.searchResults[0].id:"0"}
+						<div>{(this.state.searchResults.length>0)?this.state.searchResults[0].stream_url:"..."}</div>						
 						<iframe width="100%" height="166" 
-						scrolling="no" frameBorder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+track_url+"&amp;color=ff5500"}>
+						scrolling="no" frameBorder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+this.state.trackId+"&amp;color=ff5500"}>
 						</iframe>
 					</div>
 			);
