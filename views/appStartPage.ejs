@@ -57,6 +57,7 @@ babel is used here to perform this action in the browser.
 				}
 			} else {
 				this.setState({searchResults:theSearchResults});
+				this.updateTrackURL();
 			}
 		}
 		
@@ -75,7 +76,7 @@ babel is used here to perform this action in the browser.
 						}
 					);
 			}while(theSearchResults==0 && foundTrackListNode);
-			this.updateTrackURL();
+			// this.updateTrackURL();
 		}
 
 		updateTrackURL(){
@@ -94,7 +95,7 @@ babel is used here to perform this action in the browser.
 			console.log("ref value: "+this.trackInputNode.value);
 			console.log("ref value: "+this.artistInputNode.value);
 			this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.getAllTheSearchResults);
-			this.updateTrackURL();
+			// this.updateTrackURL();
 		}
 		
 		render(){
