@@ -7,8 +7,6 @@
 	<% if(currentUser){ %>
 		<% if("name" in currentUser){ %>
 			<p>Welcome, <%=currentUser.name%><a href="/logout"><font color="red"> Logout</font></a></p>
-		<% } else { %>
-			<a href="/login"><img src="./static/images/Login.png" width="100" height="30"></img></a>
 		<% } %>		
 	<% }else{ %>
 		<p>You have to <a href="/login">log in</a>!</p>
