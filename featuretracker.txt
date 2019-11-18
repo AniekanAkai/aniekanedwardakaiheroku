@@ -1,0 +1,23 @@
+dasgut blog features
+- Update the login to use the correct font/theme
+- update "welcome" to use the theme
+- create font 
+- improve each entry styling
+
+das gut app features
+- find track exact match with one click i.e. perform auto paging
+	- Soundcloud (Done)
+	- spotify
+	- google play
+	- apple music
+	- tidal
+	- bandcamp
+	- cdbaby
+- show all possible matches, paged based on number of search results per page to show 
+	- Soundcloud
+	- spotify
+	- google play	
+	- apple music
+	- tidal
+	- bandcamp 
+	- cdbaby
