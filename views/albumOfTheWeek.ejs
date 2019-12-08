@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="./static/css/style.css" rel="stylesheet" type="text/css">
+
+<div class="header">
+<span><a href="/"><img src="./static/images/dasguttitle.png" width="100" height="100"></a></span>
+<span class="loginWelcome">
+<% if(currentUser){ %>
+    <% if("name" in currentUser){ %>
+        <p>Welcome, <%=currentUser.name%><a href="/logout"><font color="red"> Logout</font></a></p>
+    <% } %>		
+<% }else{ %>
+    <p>You have to <a href="/login">log in</a>!</p>
+<% } %>	
+</span>
+</div>
+<div class="container">
+        <center>
+            <div class="sectionHeader">
+                <h2><a href="/albumOfTheWeek">Album of the Week</a></h2>
+            </div>
+            <% if(featuredAlbum){ %>
+                <%-featuredAlbum.embedCode%>
+            <% } else { %>
+                <i>No featured album at the moment. We are deliberating.</i>
+            <% } %>
+            <% if(currentUser && ("name" in currentUser)){ %>
+            <div class="updateFeaturedAlbumForm">
+                <h3>Update featured album</h3>
+                <form method="POST" action="\updateFeaturedAlbum">
+                    <input type="text" name="artistName" />
+                    <input type="text" name="albumName" />
+                    <textarea name="albumEmbedded"></textarea> 
+                    <input type="submit"/>
+                </form>
+            </div>
+            <% } %>
+            <div>
+            <i>Send us who you think is worthy on twitter, <a href="https://twitter.com/dasgut2">@dasgut2</a> </i>
+            </div>
+        </center>
+</div>

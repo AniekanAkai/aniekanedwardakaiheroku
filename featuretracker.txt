@@ -1,8 +1,5 @@
 dasgut blog features
-- Update the login to use the correct font/theme
-- update "welcome" to use the theme
-- create font 
-- improve each entry styling
+- SHow horizontal homepage when in desktop / vertical in mobile
 
 das gut app features
 - find track exact match with one click i.e. perform auto paging

@@ -2,6 +2,7 @@ var mongoose = require("mongoose"),
 	article = mongoose.model("article"),
 	section = mongoose.model("section"),
 	Person = mongoose.model("user"),
+	featuredAlbum = mongoose.model("featuredalbums"),
 	controller = {},
 	express = require("express"),
 	app = express(),
@@ -10,7 +11,6 @@ var mongoose = require("mongoose"),
 	io = require("socket.io").listen(server);
 
 var utils = require("../utility")
-//controller.signedInUser = {};
 
 app.use(session({secret:"amoeba"}));
 
@@ -22,23 +22,32 @@ controller.home = [
 		});	
 	}, 
 	function(req, res, next){
-		article.find({}).sort({createdAt:'desc'}).exec(function(err, posts){
-			
-			console.log(posts);
+		article.findOne().sort({createdAt: -1}).exec(function(err, posts){
+			console.log("Latest article "+posts);
+			req.posts = posts;
 			if(err){
 				console.log(err);
 				return err;
 			}
+			next();
+		});
+	},
+	function(req, res, next){
+		featuredAlbum.findOne().sort({createdAt:'desc'}).exec(function(err, latestFeaturedAlbum){
+			let signedInUser={};
 			if("user" in req.session){
 				console.log("Homepage, signed in user in session:\n"+req.session.user);
 				req.sections.forEach(function(s){
 					console.log(s.name);
-				});	
-				res.render("homeWithHighlights", {"currentUser":req.session.user, "sections":req.sections, "articles":posts[0]});
+				});
+				signedInUser = req.session.user;
+				res.render("homeWithHighlights", {"currentUser":req.session.user, "sections":req.sections, "articles":req.posts, "featuredAlbum":latestFeaturedAlbum});
 			}else{
 				console.log("Homepage, signed in user: \n"+{});
-				res.render("homeWithHighlights", {"currentUser":{}, "sections":req.sections, "articles":posts[0]});
+				console.log(latestFeaturedAlbum);
+				res.render("homeWithHighlights", {"currentUser":{}, "sections":req.sections, "articles":req.posts, "featuredAlbum":latestFeaturedAlbum});
 			}
+			// res.render("homeWithHighlights", {"currentUser":signedInUser, "sections":req.sections, "articles":req.posts, "featuredAlbum":latestFeaturedAlbum});
 		});
 	}
 ];
@@ -80,7 +89,7 @@ controller.createArticle = [
 		//function to validate that the todo isn't empty
 	},
 	function(req, res, next){
-		console.log(req.body); 
+		// console.log(req.body); 
 		var sectionStrings = req.body.sections.split(",");
 		var sections = [];
 		sectionStrings.forEach(function(s){

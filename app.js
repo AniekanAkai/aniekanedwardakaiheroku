@@ -19,11 +19,11 @@ var fs = require('fs');
 require("./models/users");
 require("./models/sections");
 require("./models/articles");
+require("./models/featuredAlbum");
 
 var userController = require("./controllers/users");
 var articleController = require("./controllers/articles");
 var appController = require("./controllers/app");
-//var sectionController = require("./controllers/sections");
 
 var utils = require("./utility");	
 	
@@ -50,9 +50,11 @@ if(mongoDBHost == "localhost"){
 }
 var article = mongoose.model("article");
 var person = mongoose.model("user");
+var featuredAlbum = mongoose.model("featuredalbums");
 
 //extractArticlesFromXML();
 
+// Endpoints
 app.get("/", articleController.home);
 app.get("/listPosts", articleController.listAllArticles);
 app.post("/login", userController.login);
@@ -80,10 +82,12 @@ app.get("/article/:articleName", articleController.showArticle);
 
 app.post("/newArticle", articleController.createArticle);
 
+app.get("/newArticle", articleController.createArticle);
+
 app.get("/deleteArticle/:articleName", articleController.deleteArticle);
 
 app.get("/removeDeletedArticle/:articleName", function(req, res){
-	io.sockets.emit("deleteArticle", req.params.articleName);			
+	io.sockets.emit("deleteArticle", req.params.articleName);
 	console.log("Removed the article: " + req.params.articleName);
 });
 
@@ -100,6 +104,32 @@ app.get("/sendNewArticle/:articleName",  function(req, res){
 
 app.get("/sendNewSection/:sectionName", function(req, res){
 	io.sockets.emit('addingNewSection', req.params.sectionName);
+});
+
+app.post("/updateFeaturedAlbum", function(req, res){
+	console.log(req.body);
+	console.log(req.params);
+	var newFeature = {
+		artistName:req.body.artistName,
+		albumName:req.body.albumName,
+		embedCode:req.body.albumEmbedded
+	};
+	featuredAlbum.create(newFeature, function(err, album){
+		if(err){
+			console.log(err);
+			res.send(404);
+			return next(err);
+		}else{
+			res.redirect("/albumOfTheWeek");
+		}
+	});
+	
+});
+
+app.get("/albumOfTheWeek", function(req, res){
+	featuredAlbum.findOne().sort({createdAt:'desc'}).exec(function(err, latestFeaturedAlbum){
+		res.render("albumOfTheWeek", {"currentUser":{}, "featuredAlbum":latestFeaturedAlbum});
+	});
 });
 
 app.get("/app", appController.start);

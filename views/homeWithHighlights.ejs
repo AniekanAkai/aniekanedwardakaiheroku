@@ -47,7 +47,26 @@
 		</div>
 		
 		<div class="rightSection">
-			<iframe style="border: 0; width: 300px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=204493737/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/" seamless><a href="http://feraltrash.bandcamp.com/album/trashfiction">Trashfiction by Feral Trash</a></iframe>
+			<div class="sectionHeader">
+				<h2><a href="/albumOfTheWeek">Album of the Week</a></h2>
+			</div>
+			<% if(featuredAlbum){ %>
+				<%-featuredAlbum.embedCode%>
+			<% } else { %>
+				<i>No featured album at the moment. We are deliberating.</i>
+				<i>Send us who you think is worthy on twitter, <a href="https://twitter.com/dasgut2">@dasgut2</a> </i>
+			<% } %>
+			<% if(currentUser && ("name" in currentUser)){ %>
+			<div class="updateFeaturedAlbumForm">
+				<h3>Update featured album</h3>
+				<form method="POST" action="\updateFeaturedAlbum">
+					<input type="text" name="artistName" />
+					<input type="text" name="albumName" />
+					<textarea name="albumEmbedded"></textarea> 
+					<input type="submit"/>
+				</form>
+			</div>
+			<% } %>
 		</div>
   </div>
 <script>
