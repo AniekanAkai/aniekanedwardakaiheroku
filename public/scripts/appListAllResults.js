@@ -1,9 +1,9 @@
 SC.initialize({
-  client_id: 'MpLVGIOGWboHqGT3WePdQvUOVd0sswgq'
+  client_id: '95f22ed54a5c297b1c41f72d713623ef'
 });
 var theSearchResults = [];
-var track_url = "";
-
+var trackUrl = "";
+var topResult = "";
 class NameForm extends React.Component{
 	constructor(trackName){
 		super();
@@ -12,8 +12,11 @@ class NameForm extends React.Component{
 
 	populateSearchResults(tracks, artistValue){
 		tracks.collection.forEach(function(track){
-
 			theSearchResults.push(track);
+			if(track.user.username.toUpperCase()==artistValue.toUpperCase()){
+				console.log("Found it!!");
+				topResult = track;
+			}
 		});
 	}
 	
@@ -49,16 +52,16 @@ class NameForm extends React.Component{
 		var foundTrackListNode;
 		let artistValue = this.state.artistName;
 		do{
-				SC.get('/tracks', {limit:100, linked_partitioning:1, q:this.state.trackName})
-				.then(
-					(tracks)=> {
-						console.log("Searching");
-						console.log(artistValue);
-						console.log(tracks);
-						foundTrackListNode = tracks;
-						this.findTrackInTracks(foundTrackListNode, artistValue);
-					}
-				);
+			SC.get('/tracks', {limit:10, linked_partitioning:1, q:this.state.trackName})
+			.then(
+				(tracks)=> {
+					console.log("Searching");
+					console.log(artistValue);
+					console.log(tracks);
+					foundTrackListNode = tracks;
+					this.findTrackInTracks(foundTrackListNode, artistValue);
+				}
+			);
 		}while(theSearchResults==0 && foundTrackListNode);
 		// this.updateTrackURL();
 	}
@@ -79,7 +82,6 @@ class NameForm extends React.Component{
 		console.log("ref value: "+this.trackInputNode.value);
 		console.log("ref value: "+this.artistInputNode.value);
 		this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.getAllTheSearchResults);
-		// this.updateTrackURL();
 	}
 	
 	render(){
@@ -92,9 +94,19 @@ class NameForm extends React.Component{
 					</form>
 					<div><b>Search results for </b><span>{(this.state.trackName)?this.state.trackName:"___"}</span> by {(this.state.artistName)?this.state.artistName:"___"}</div>
 					<hr/>
-					<div>{(this.state.searchResults.length>0)?this.state.searchResults[0].stream_url:"..."}</div>						
+					<div>{(this.state.searchResults.length>0)?this.state.searchResults[0].stream_url:"..."}</div>
+					<hr/>
+					<div>
+						<h3>Top result</h3>
+						<iframe width="80%" height="166" scrolling="no" frameBorder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+topResult.id+"&amp;color=ff5500"}>
+						</iframe>
+					</div>
+					<hr/>
+					<div>
+						<h3>Suggested searches</h3>
+					</div>
 					<ul>{this.state.searchResults.map((results)=>
-						<iframe width="100%" height="166" 
+						<iframe width="80%" height="166" 
 					scrolling="no" frameBorder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+results.id+"&amp;color=ff5500"}>
 					</iframe>
 					)}</ul>
