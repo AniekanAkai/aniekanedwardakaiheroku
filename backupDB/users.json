@@ -1,0 +1,63 @@
+[
+{ 
+    "_id" : ObjectId("59f6d6afa40422000465ec92"), 
+    "name" : "Aniekan Akai", 
+    "email" : "aniekanakai@gmail.com", 
+    "password" : "gutA1", 
+    "status" : "Pending", 
+    "createdAt" : ISODate("2017-10-30T07:37:19.401+0000"), 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5a3498196b2046000491d8fc"), 
+    "name" : "Teddy Edwards", 
+    "email" : "sadeTeddy@gmail", 
+    "password" : "", 
+    "status" : "Pending", 
+    "createdAt" : ISODate("2017-12-16T03:50:49.812+0000"), 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5a457f0b8a31740004b5152e"), 
+    "name" : "Manny P", 
+    "email" : "mp@dasgut.com", 
+    "password" : "pacman", 
+    "status" : "Pending", 
+    "createdAt" : ISODate("2017-12-28T23:32:27.760+0000"), 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5a901096806dac0004fb1083"), 
+    "name" : "Sndcld dickrider", 
+    "email" : "Strider@soundcloud.com", 
+    "password" : "ridedick", 
+    "status" : "Pending", 
+    "createdAt" : ISODate("2018-02-23T13:01:10.016+0000"), 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b5005eaefe3910004e462d5"), 
+    "name" : "My Nig", 
+    "email" : "Mnig@gmails.com", 
+    "password" : "xxxx", 
+    "status" : "Pending", 
+    "createdAt" : ISODate("2018-07-19T03:30:50.256+0000"), 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "name" : "dasGutAdmin", 
+    "email" : "admin@localhost.com", 
+    "password" : "auto", 
+    "status" : "Confirmed"
+},
+{ 
+    "_id" : ObjectId("5bb70b806afaa30004447105"), 
+    "name" : "Freaky", 
+    "email" : "freaky@yahoo.com", 
+    "password" : "freak", 
+    "status" : "Pending", 
+    "createdAt" : ISODate("2018-10-05T06:58:08.293+0000"), 
+    "__v" : NumberInt(0)
+}
+]

@@ -13,8 +13,10 @@ var express = require("express"),
 	
 var xml2js = require('xml2js');
 var parser = new xml2js.Parser();
-var fs = require('fs');
-
+var request = require('request'); // "Request" library
+var cors = require('cors');
+var querystring = require('querystring');
+var cookieParser = require('cookie-parser');
 
 require("./models/users");
 require("./models/sections");
@@ -24,6 +26,7 @@ require("./models/featuredAlbum");
 var userController = require("./controllers/users");
 var articleController = require("./controllers/articles");
 var appController = require("./controllers/app");
+var spotifyAuthController = require("./controllers/spotifyauth");
 
 var utils = require("./utility");	
 	
@@ -32,7 +35,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(logger('common'));
 app.use(express.static(__dirname+'/public'));
-
+app.use(cors())
+   .use(cookieParser());
 app.set('view engine', 'ejs');
 
 app.use(session({secret:"amoeba"}));
@@ -133,6 +137,10 @@ app.get("/albumOfTheWeek", function(req, res){
 });
 
 app.get("/app", appController.start);
+
+app.get('/spotifyLogin', spotifyAuthController.login);
+app.get('/app/callback', spotifyAuthController.callback);
+app.get('/app/refresh_token', spotifyAuthController.refreshtoken);
 
 io.sockets.on('connection',function(socket){
 	console.log("socket connected.");	

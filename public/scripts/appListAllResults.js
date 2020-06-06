@@ -7,7 +7,9 @@ var topResult = "";
 class NameForm extends React.Component{
 	constructor(trackName){
 		super();
-		this.state = {artistName:"", trackName:"", searchResults:theSearchResults, trackUrl:"", trackId:0};
+		this.state = {artistName:"", trackName:"", searchResults:theSearchResults, trackUrl:"", trackId:0, platformsToSearch:[]};
+		this.setPlatformsToSearch = this.setPlatformsToSearch.bind(this);
+		this.searchSubmit = this.searchSubmit.bind(this);
 	}
 
 	populateSearchResults(tracks, artistValue){
@@ -63,7 +65,6 @@ class NameForm extends React.Component{
 				}
 			);
 		}while(theSearchResults==0 && foundTrackListNode);
-		// this.updateTrackURL();
 	}
 
 	updateTrackURL(){
@@ -76,7 +77,7 @@ class NameForm extends React.Component{
 		this.setState({trackId:track_id});
 	}
 
-	searchSubmit = event => {
+	searchSubmit(event){
 		event.preventDefault();
 		console.log(event.target.elements.thisTrackname.value);
 		console.log("ref value: "+this.trackInputNode.value);
@@ -84,15 +85,40 @@ class NameForm extends React.Component{
 		this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.getAllTheSearchResults);
 	}
 	
+	setPlatformsToSearch(changeEvent){
+		console.log(changeEvent.target.id);
+		let platform = this.state.platformsToSearch;
+		if(changeEvent.target.checked){
+			platform.push(changeEvent.target.id);
+		} else {
+			platform = platform.filter(e => e !== changeEvent.target.id);
+		}
+		console.log(platform);
+		this.setState({platformsToSearch: platform});
+		console.log(this.state.platformsToSearch);
+	}
+
 	render(){
 		return (<div>
 					<form onSubmit={this.searchSubmit}>
 						<label>Find song:</label>							
 						<input type="text" name="thisTrackname" ref={node => {this.trackInputNode = node}}/>
 						<input type="text" name="thisArtistName" ref={node => {this.artistInputNode = node}}/>
+						<div>
+							<span>
+								<input type="checkbox" name="spotifyCheck" id="spotifyCheck" onChange={(e)=>this.setPlatformsToSearch(e)} />Spotify
+							</span>
+							<span>
+								<input type="checkbox" name="soundcloudCheck" id="soundcloudCheck" onChange={this.setPlatformsToSearch} />Soundcloud
+							</span>
+							<span>
+								<input type="checkbox" name="bandcampCheck" id="bandcampCheck" onChange={this.setPlatformsToSearch}/>Bandcamp
+							</span>
+						</div>
 						<input type="submit"/>							
 					</form>
-					<div><b>Search results for </b><span>{(this.state.trackName)?this.state.trackName:"___"}</span> by {(this.state.artistName)?this.state.artistName:"___"}</div>
+		<div><b>Search results for </b><span>{(this.state.trackName)?this.state.trackName:"___"}</span> by {(this.state.artistName)?this.state.artistName:"___"} in {this.state.platformsToSearch}</div>
+
 					<hr/>
 					<div>{(this.state.searchResults.length>0)?this.state.searchResults[0].stream_url:"..."}</div>
 					<hr/>

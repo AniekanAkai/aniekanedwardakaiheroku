@@ -9,7 +9,6 @@ das gut app features
 	- apple music
 	- tidal
 	- bandcamp
-	- cdbaby
 - show all possible matches, paged based on number of search results per page to show 
 	- Soundcloud
 	- spotify
@@ -17,4 +16,3 @@ das gut app features
 	- apple music
 	- tidal
 	- bandcamp 
-	- cdbaby
