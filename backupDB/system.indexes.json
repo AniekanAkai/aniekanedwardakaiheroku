@@ -1,0 +1,72 @@
+[
+{ 
+    "v" : NumberInt(2), 
+    "key" : {
+        "_id" : NumberInt(1)
+    }, 
+    "name" : "_id_", 
+    "ns" : "heroku_25qfl71w.users"
+},
+{ 
+    "v" : NumberInt(2), 
+    "key" : {
+        "_id" : NumberInt(1)
+    }, 
+    "name" : "_id_", 
+    "ns" : "heroku_25qfl71w.sections"
+},
+{ 
+    "v" : NumberInt(2), 
+    "key" : {
+        "_id" : NumberInt(1)
+    }, 
+    "name" : "_id_", 
+    "ns" : "heroku_25qfl71w.articles"
+},
+{ 
+    "v" : NumberInt(2), 
+    "unique" : true, 
+    "key" : {
+        "email" : NumberInt(1)
+    }, 
+    "name" : "email_1", 
+    "ns" : "heroku_25qfl71w.users", 
+    "background" : true
+},
+{ 
+    "v" : NumberInt(2), 
+    "unique" : true, 
+    "key" : {
+        "name" : NumberInt(1)
+    }, 
+    "name" : "name_1", 
+    "ns" : "heroku_25qfl71w.sections", 
+    "background" : true
+},
+{ 
+    "v" : NumberInt(2), 
+    "unique" : true, 
+    "key" : {
+        "title" : NumberInt(1)
+    }, 
+    "name" : "title_1", 
+    "ns" : "heroku_25qfl71w.articles", 
+    "background" : true
+},
+{ 
+    "v" : NumberInt(2), 
+    "key" : {
+        "_id" : NumberInt(1)
+    }, 
+    "name" : "_id_", 
+    "ns" : "heroku_25qfl71w.objectlabs-system"
+},
+{ 
+    "v" : NumberInt(2), 
+    "key" : {
+        "_id" : NumberInt(1)
+    }, 
+    "name" : "_id_", 
+    "ns" : "heroku_25qfl71w.objectlabs-system.admin.collections"
+}
+]

@@ -1,0 +1,90 @@
+[
+{ 
+    "_id" : ObjectId("5b557b74228e73452483c2be"), 
+    "title" : "“Wouldn’t it be great to heal the world ", 
+    "body" : "<h3>“Wouldn’t it be great to heal the world with only a song”</h3><p>- Serj Tankian “Honking Antelope”</p>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:40.929+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b557b75228e73452483c2e1"), 
+    "title" : "There is a punk rock revival going on ", 
+    "body" : "<h3>There is a punk rock revival going on and the artists coming out make me so happy. </h3>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:41.004+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b557b75228e73452483c2e6"), 
+    "title" : "Artists I’ve been put on in 2015 so ", 
+    "body" : "<h3>Artists I’ve been put on in 2015 so far(Individual Reviews to come)</h3><p><a href=\"http://musicloversandfriends.tumblr.com/post/124289407140/artists-ive-been-put-on-in-2015-so-far-individual\" class=\"tumblr_blog\">musicloversandfriends</a>:</p>\n\n<blockquote><p><a href=\"https://bratkings.bandcamp.com/\">Brat Kings</a> [Punk]</p>\n<p><a href=\"https://adarkerdayottawa.bandcamp.com/\">A Darker Day</a>[Doom Metal]</p>\n<p><a href=\"https://soundcloud.com/keithape\">Keith Ape</a> [Rap/Hip Hop]</p>\n<p><a href=\"https://twitter.com/kohh_t20\">Kohh</a> [Rap/Hip\nHop]</p>\n<p><a href=\"https://soundcloud.com/ozzybsounds\">Ozzy B</a> [Rap/Hip Hop]</p>\n<p><a href=\"http://www.ibeyi.fr/\">Ibeyi</a> [Soul]</p>\n<p><a href=\"https://twitter.com/symplysimi\">Simi</a>[R&amp;B]</p>\n<p><a href=\"https://soundcloud.com/og-maco\">OG Maco</a>[Rap/Hip Hop]</p>\n<p><a href=\"http://www.scroobiuspip.co.uk/\">Scroobius Pip</a>[Spoken Word/Rap]</p></blockquote>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:41.015+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b557b75228e73452483c306"), 
+    "title" : "The past 7 days have been awesome in ", 
+    "body" : "<h3>The past 7 days have been awesome in music. I know what my next album purchases are going to be. </h3><p>&ldquo;The Joy of Motion&rdquo; by Animals as Leaders [Must hear: &ldquo;Physical Education&rdquo;]</p>\n<p>&ldquo;COPE&rdquo; by Manchester Orchestra [Must hear: &ldquo;Top Notch&rdquo;]</p>\n<p>Both been streamed and truly awesome. How can you not love music? I wish the world shared my enthusiasm sometimes but somethings are better enjoyed in solitude and I say, give me an empty room and all I ask is you give me a music player and access to my choice of music.</p>\n<p>Also, festival season is coming soon. Gotta start saving, this summer has to be legendary. :D</p>\n<p>Can&rsquo;t wait. </p>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:41.075+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b557b75228e73452483c314"), 
+    "title" : "I was at Vertigo Records today and I ", 
+    "body" : "<h3>I was at Vertigo Records today and I haven't felt that at peace in a while</h3><p><a class=\"tumblr_blog\" href=\"http://musicloversandfriends.tumblr.com/post/74900600292/i-was-at-vertigo-records-today-and-i-havent-felt-that\">musicloversandfriends</a>:</p>\n<blockquote>\n<p>Danzig playing in the background, unlimited amounts of music I didn’t know yet and some I already knew. </p>\n</blockquote>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:41.102+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b557b75228e73452483c315"), 
+    "title" : "Fuck The Grammy's. I need to vent.... I've ", 
+    "body" : "<h3>Fuck The Grammy's. I need to vent.... I've lost all respect for the Grammy Awards</h3>Link: <a href=\"http://musicloversandfriends.tumblr.com/post/74706859395/fuck-the-grammys-i-need-to-vent-ive-lost-all\">Fuck The Grammy's. I need to vent.... I've lost all respect for the Grammy Awards</a>\n\n    <p><a class=\"tumblr_blog\" href=\"http://musicloversandfriends.tumblr.com/post/74706859395/fuck-the-grammys-i-need-to-vent-ive-lost-all\">musicloversandfriends</a>:</p>\n<blockquote>\n<p><a href=\"http://arts.nationalpost.com/2014/01/26/grammys-2014-the-full-list-of-winners-so-far/\">http://arts.nationalpost.com/2014/01/26/grammys-2014-the-full-list-of-winners-so-far/</a></p>\n<p>Going through this list of winners again, I am very angry, hurt and confused. I wish I had someone to explain the thought process of the board of judges because I am very lost. I do not understand how a joke&hellip;</p>\n</blockquote>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:41.106+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b557b75228e73452483c31a"), 
+    "title" : "Who has a time machine, I wanna go ", 
+    "body" : "<h3>Who has a time machine, I wanna go to woodstock to see Jimi Hendrix in his prime</h3>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:41.117+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+},
+{ 
+    "_id" : ObjectId("5b557b75228e73452483c32b"), 
+    "title" : "I haven't really lived up to the description ", 
+    "body" : "<h3>I haven't really lived up to the description of the blog lately. My apologies to myself and to any followers that actually looked to get some new music. I will start taking this more seriously and helping you discover more great music. Stay tuned. </h3>", 
+    "author" : ObjectId("5b5579b7fb6fc0396849f612"), 
+    "createdAt" : ISODate("2018-07-23T06:53:41.158+0000"), 
+    "sections" : [
+
+    ], 
+    "__v" : NumberInt(0)
+}
+]
