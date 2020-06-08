@@ -92,7 +92,7 @@ class NameForm extends React.Component{
 	
 	render(){
 		return (<div>
-					<a href="/spotifyLogin" class="btn btn-primary">Log in with Spotify</a>
+					<a href="/app/spotifyLogin" class="btn btn-primary">Log in with Spotify</a>
 					<form onSubmit={this.searchSubmit}>
 						<label>Find song:</label>							
 						<input type="text" name="thisTrackname" ref={node => {this.trackInputNode = node}}/>

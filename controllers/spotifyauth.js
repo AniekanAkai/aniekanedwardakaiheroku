@@ -17,6 +17,8 @@ var client_id = '7c36ba74eb0f442cb87bef2062f22d4a'; // Your client id
 var client_secret = '94ea2021369a4f0fb31f8a3baedae61d'; // Your secret
 var redirect_uri = 'http://localhost:8080/app/callback'; // Your redirect uri
 
+var access_token='';//BQCaY4E-1wQokWwIVLT1tTz7P8eHkM8R0XETo5L5BHr8OxQYgYY4Oyym6wVPyYjaFPVhkmdsEsfbnN1kexIN3rVv0hT50oehcEo-tkzFod_lo7mY1ckRO130eUDDq3Zn9RwSvfPcc8xxPz-j2jz89sSShmoQRvm4pbvMqIK68dJdFDFE7w
+var refresh_token='';//AQBiNdiNyidL_DDLRAsy8f6uMkfInxekqrN_iWN-2fEA4H3NSoK6RbKuyHqtokkQQP75D5cgGSHEdIXgshIwxR3UxDaCuAy8zLePHbaMJJNQw7QsHlDeoz_0cbxt5b153Qo
 var controller = {};
 
 /**
@@ -69,9 +71,10 @@ controller.callback = function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
+  var homeUrl = '/app/'
 
   if (state === null || state !== storedState) {
-    res.redirect('/#' +
+    res.redirect(homeUrl +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -108,13 +111,13 @@ controller.callback = function(req, res) {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
+        res.redirect(homeUrl +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect('/#' +
+        res.redirect(homeUrl +
           querystring.stringify({
             error: 'invalid_token'
           }));

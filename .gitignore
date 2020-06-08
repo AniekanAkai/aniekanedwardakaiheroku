@@ -49,3 +49,4 @@ Temporary Items
 
 #Directories
 node_modules/
+package-lock.json

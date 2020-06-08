@@ -17,6 +17,7 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var spotifyConfigPath = "./conf/spotifyConfig.json";
 
 require("./models/users");
 require("./models/sections");
@@ -42,6 +43,7 @@ app.set('view engine', 'ejs');
 app.use(session({secret:"amoeba"}));
 
 var CONFIG = require('./conf/systemconfig.json');
+var SPOTIFY_CONFIG = require(spotifyConfigPath);
 
 var mongoDBHost = CONFIG.databaseHost || "localhost";
 var mongoDBPort = CONFIG.databasePort || 27017;
@@ -136,15 +138,40 @@ app.get("/albumOfTheWeek", function(req, res){
 	});
 });
 
+app.get("/app/access_token=:access_token&refresh_token=:refresh_token", function(req, res, next){
+	let newConfiguration = {};
+	newConfiguration.accessToken = req.params.access_token;
+	newConfiguration.refreshToken = req.params.refresh_token;
+	console.log("Update spotify config: "+JSON.stringify(newConfiguration));
+	updateSpotifyConfiguration(newConfiguration);
+	next();
+}, appController.start);
+
 app.get("/app", appController.start);
 
-app.get('/spotifyLogin', spotifyAuthController.login);
+app.get('/app/spotifyLogin', spotifyAuthController.login);
 app.get('/app/callback', spotifyAuthController.callback);
 app.get('/app/refresh_token', spotifyAuthController.refreshtoken);
 
 io.sockets.on('connection',function(socket){
 	console.log("socket connected.");	
 });
+
+function updateSpotifyConfiguration(newConfiguration){
+	let configurationValues = {};
+	if(newConfiguration.accessToken){
+		configurationValues.accessToken = newConfiguration.accessToken;
+	}
+	if(newConfiguration.refreshToken){
+		configurationValues.refreshToken = newConfiguration.refreshToken;
+	}
+	console.log(JSON.stringify(configurationValues));
+	if(Object.keys(configurationValues).length != 0){
+		fs.writeFile(spotifyConfigPath, JSON.stringify(configurationValues), (err) => {
+			if (err) console.log('Error writing file:', err)
+		});
+	}
+}
 
 function extractArticlesFromXML(){
 		fs.readFile(__dirname + '/public/xml/tumblr_debutmag.xml', function(err, data) {
