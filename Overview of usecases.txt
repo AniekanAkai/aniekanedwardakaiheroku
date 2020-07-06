@@ -1,8 +1,24 @@
-Tool to take playlist from streaming platform and port to another platform.
- - webapp & mobile app?
+Tool to take playlists from any streaming platform and port to any another platform.
+ - webapp & mobile app
  - Main use case, user specifies the playlist name and platform and they can:
 		.Save in cloud
 		.Send to people as flexible format for any platform
 		.Move to new platform
 		.Can play in any platform
 - Secondary use case, user can create inter-platform playlists.
+
+Feature breakdown( Issues at https://github.com/AniekanAkai/aniekanedwardakaiheroku)
+- find track exact match with one click i.e. perform auto paging
+	- Soundcloud (Done)
+	- spotify
+	- google play
+	- apple music
+	- tidal
+	- bandcamp
+- show all possible matches, paged based on number of search results per page to show 
+	- Soundcloud
+	- spotify
+	- google play	
+	- apple music
+	- tidal
+	- bandcamp 

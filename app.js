@@ -58,6 +58,8 @@ var article = mongoose.model("article");
 var person = mongoose.model("user");
 var featuredAlbum = mongoose.model("featuredalbums");
 
+var configurationValues = {};
+
 //extractArticlesFromXML();
 
 // Endpoints
@@ -145,9 +147,15 @@ app.get("/app/access_token=:access_token&refresh_token=:refresh_token", function
 	console.log("Update spotify config: "+JSON.stringify(newConfiguration));
 	updateSpotifyConfiguration(newConfiguration);
 	next();
-}, appController.start);
+// }, appController.start);
+}, function(req, res){
+	res.render("appStartPage", {spotifyAuthToken: configurationValues.accessToken});
+});
 
-app.get("/app", appController.start);
+// app.get("/app", appController.start);
+app.get("/app", function(req, res){
+	res.render("appStartPage", {spotifyAuthToken: configurationValues.accessToken});
+});
 
 app.get('/app/spotifyLogin', spotifyAuthController.login);
 app.get('/app/callback', spotifyAuthController.callback);
@@ -158,7 +166,6 @@ io.sockets.on('connection',function(socket){
 });
 
 function updateSpotifyConfiguration(newConfiguration){
-	let configurationValues = {};
 	if(newConfiguration.accessToken){
 		configurationValues.accessToken = newConfiguration.accessToken;
 	}

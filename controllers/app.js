@@ -17,7 +17,7 @@ app.use(session({secret:"amoeba"}));
 
 controller.start = [
 	function(req, res){
-		res.render("appStartPage");
+		res.render("appStartPage", {spotifyAuthToken: access_token});
 	}
 ];
 

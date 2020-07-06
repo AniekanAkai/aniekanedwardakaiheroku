@@ -2,9 +2,11 @@
 //Spotify pw wehrlos2020
 //Spotify client id 7c36ba74eb0f442cb87bef2062f22d4a
 
+var oauthToken="";
 var theSearchResults = [];
 var trackUrl = "";
 var topResult = "";
+
 class NameForm extends React.Component{
 	constructor(trackName){
 		super();
@@ -66,7 +68,6 @@ class NameForm extends React.Component{
 			);
 			console.log("Num of results"+theSearchResults.length);
 		}while(theSearchResults==0 && foundTrackListNode);
-		// this.updateTrackURL();
 	}
 
 	updateTrackURL(){
@@ -89,10 +90,17 @@ class NameForm extends React.Component{
 
 		this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.getAllTheSearchResults);
 	}
-	
+
+	spotifyLogin(spotifyAuthToken) {
+		if (spotifyAuthToken) {
+			return <div>Access Token: {spotifyAuthToken}</div>;
+		}
+		return <a href="/app/spotifyLogin" class="btn btn-primary">Log in with Spotify</a>;
+	}
+
 	render(){
 		return (<div>
-					<a href="/app/spotifyLogin" class="btn btn-primary">Log in with Spotify</a>
+					{this.spotifyLogin(spotifyAuthToken.innerText)}
 					<form onSubmit={this.searchSubmit}>
 						<label>Find song:</label>							
 						<input type="text" name="thisTrackname" ref={node => {this.trackInputNode = node}}/>
@@ -121,6 +129,8 @@ class NameForm extends React.Component{
 		);
 	}
 }	
+
+var spotifyAuthToken=document.getElementById("spotifyAuthToken");
 var rootElement = document.getElementById("root");
 var element = <NameForm/>
 
