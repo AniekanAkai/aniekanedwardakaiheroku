@@ -6,7 +6,9 @@ var oauthToken="";
 var theSearchResults = [];
 var trackUrl = "";
 var topResult = "";
-
+// var Spotify = require('spotify-web-api-js');
+var spotifyApi = new SpotifyWebApi();
+var findSpotifyTrackInTracks;
 class NameForm extends React.Component{
 	constructor(trackName){
 		super();
@@ -14,12 +16,13 @@ class NameForm extends React.Component{
 	}
 
 	populateSearchResults(tracks, artistValue){
-		tracks.collection.forEach(function(track){
+		console.log(tracks);
+		tracks.forEach(function(track){
 			theSearchResults.push(track);
-			if(track.user.username.toUpperCase()==artistValue.toUpperCase()){
-				console.log("Found it!!");
-				topResult = track;
-			}
+			// if(track.user.username.toUpperCase()==artistValue.toUpperCase()){
+			// 	console.log("Found it!!");
+			// 	topResult = track;
+			// }
 		});
 	}
 	
@@ -50,9 +53,38 @@ class NameForm extends React.Component{
 			this.updateTrackURL();
 		}
 	}
-	
+
+	findSpotifyTrackInTracks = (tracks, artistValue) =>{
+		this.populateSearchResults(tracks, artistValue);
+		this.setState({searchResults:theSearchResults});
+		this.updateTrackURL();
+		
+	}
+
+
+	spotifyGetAllSearchResults(){
+		let foundTrackListNode;
+		let artistValue = this.state.artistName;
+		do{
+			console.log("Num of results"+theSearchResults.length);
+			spotifyApi.setAccessToken(oauthToken);
+			spotifyApi.searchTracks('Love').then(
+				(data) =>{
+				  console.log('Search by "Love"', data);
+				  foundTrackListNode = data.tracks.items;
+				  this.findSpotifyTrackInTracks(foundTrackListNode, artistValue);
+				},
+				(err) => {
+				  console.error(err);
+				}
+			  );
+
+			console.log("Num of results"+theSearchResults.length);
+		}while(theSearchResults==0 && foundTrackListNode);
+	}
+
 	getAllTheSearchResults(){
-		var foundTrackListNode;
+		let foundTrackListNode;
 		let artistValue = this.state.artistName;
 		do{
 			console.log("Num of results"+theSearchResults.length);
@@ -88,11 +120,13 @@ class NameForm extends React.Component{
 		theSearchResults = [];
 		this.setState({searchResults:theSearchResults});
 
-		this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.getAllTheSearchResults);
+		this.setState({trackName:this.trackInputNode.value, artistName:this.artistInputNode.value},this.spotifyGetAllSearchResults);
 	}
+
 
 	spotifyLogin(spotifyAuthToken) {
 		if (spotifyAuthToken) {
+			oauthToken = spotifyAuthToken;
 			return <div>Access Token: {spotifyAuthToken}</div>;
 		}
 		return <a href="/app/spotifyLogin" class="btn btn-primary">Log in with Spotify</a>;
@@ -113,17 +147,14 @@ class NameForm extends React.Component{
 					<hr/>
 					<div>
 						<h3>Top result</h3>
-						<iframe width="80%" height="166" scrolling="no" frameBorder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+topResult.id+"&amp;color=ff5500"}>
-						</iframe>
+						<iframe width="80%" height="166" scrolling="no" frameBorder="no" src={"https://embed.spotify.com/?uri=spotify:track:"+topResult.id} allowtransparency='true'></iframe>
 					</div>
 					<hr/>
 					<div>
 						<h3>Suggested searches</h3>
 					</div>
 					<ul>{this.state.searchResults.map((results)=>
-						<iframe width="80%" height="166" 
-					scrolling="no" frameBorder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/"+results.id+"&amp;color=ff5500"}>
-					</iframe>
+						<iframe width="80%" height="166" scrolling="no" frameBorder="no" src={"https://embed.spotify.com/?uri=spotify:track:"+results.id} allowtransparency='true'></iframe>
 					)}</ul>
 				</div>
 		);
