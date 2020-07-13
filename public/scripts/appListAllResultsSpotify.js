@@ -15,15 +15,31 @@ class NameForm extends React.Component{
 		this.state = {artistName:"", trackName:"", searchResults:theSearchResults, trackUrl:"", trackId:0};
 	}
 
+	isSpotifyTrackByArtist(track){
+		track.artists.forEach(function(artist){
+			if(artist.name.toUpperCase()==artistValue.toUpperCase()){
+				return true;
+			}
+		});
+		return false;
+	}
+
+	isSoundcloudTrackByArtist(track){
+		return (track.user.username.toUpperCase()==artistValue.toUpperCase());
+	}
+
+
 	populateSearchResults(tracks, artistValue){
 		console.log(tracks);
 		tracks.forEach(function(track){
 			theSearchResults.push(track);
-			// if(track.user.username.toUpperCase()==artistValue.toUpperCase()){
-			// 	console.log("Found it!!");
-			// 	topResult = track;
-			// }
+			if(isSpotifyTrackByArtist(track)){
+				console.log("Found it!!");
+				topResult = track;
+			}
 		});
+		console.log(theSearchResults);
+
 	}
 	
 	findTrackInTracks(tracks, artistValue){			
@@ -54,23 +70,23 @@ class NameForm extends React.Component{
 		}
 	}
 
-	findSpotifyTrackInTracks = (tracks, artistValue) =>{
+	findSpotifyTrackInTracks = (tracks, artistValue) => {
 		this.populateSearchResults(tracks, artistValue);
 		this.setState({searchResults:theSearchResults});
 		this.updateTrackURL();
-		
 	}
 
 
 	spotifyGetAllSearchResults(){
 		let foundTrackListNode;
 		let artistValue = this.state.artistName;
-		do{
-			console.log("Num of results"+theSearchResults.length);
+		let trackName = this.state.trackName;
+		do {
+			console.log("Num of results: "+theSearchResults.length);
 			spotifyApi.setAccessToken(oauthToken);
-			spotifyApi.searchTracks('Love').then(
-				(data) =>{
-				  console.log('Search by "Love"', data);
+			spotifyApi.searchTracks(trackName).then(
+				(data) => {
+				  console.log('Searching spotify for "'+trackName+'" by '+artistValue, data);
 				  foundTrackListNode = data.tracks.items;
 				  this.findSpotifyTrackInTracks(foundTrackListNode, artistValue);
 				},
@@ -78,28 +94,8 @@ class NameForm extends React.Component{
 				  console.error(err);
 				}
 			  );
-
 			console.log("Num of results"+theSearchResults.length);
-		}while(theSearchResults==0 && foundTrackListNode);
-	}
-
-	getAllTheSearchResults(){
-		let foundTrackListNode;
-		let artistValue = this.state.artistName;
-		do{
-			console.log("Num of results"+theSearchResults.length);
-			SC.get('/tracks', {limit:10, linked_partitioning:1, q:this.state.trackName})
-			.then(
-				(tracks)=> {
-					console.log("Searching");
-					console.log(artistValue);
-					console.log(tracks);
-					foundTrackListNode = tracks;
-					this.findTrackInTracks(foundTrackListNode, artistValue);
-				}
-			);
-			console.log("Num of results"+theSearchResults.length);
-		}while(theSearchResults==0 && foundTrackListNode);
+		} while(theSearchResults==0 && foundTrackListNode);
 	}
 
 	updateTrackURL(){
