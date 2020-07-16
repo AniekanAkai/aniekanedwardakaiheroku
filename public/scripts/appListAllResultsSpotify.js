@@ -15,31 +15,31 @@ class NameForm extends React.Component{
 		this.state = {artistName:"", trackName:"", searchResults:theSearchResults, trackUrl:"", trackId:0};
 	}
 
-	isSpotifyTrackByArtist(track){
+	isSpotifyTrackByArtist(track, artistValue){
+		let found = false;
 		track.artists.forEach(function(artist){
 			if(artist.name.toUpperCase()==artistValue.toUpperCase()){
-				return true;
+				found = true;
 			}
 		});
-		return false;
+		return found;
 	}
 
-	isSoundcloudTrackByArtist(track){
+	isSoundcloudTrackByArtist(track, artistValue){
 		return (track.user.username.toUpperCase()==artistValue.toUpperCase());
 	}
 
 
 	populateSearchResults(tracks, artistValue){
 		console.log(tracks);
-		tracks.forEach(function(track){
+		tracks.forEach((track)=>{
 			theSearchResults.push(track);
-			if(isSpotifyTrackByArtist(track)){
-				console.log("Found it!!");
-				topResult = track;
+			if(this.isSpotifyTrackByArtist(track, artistValue)){
+			 	console.log("Found it!!");
+			 	topResult = track;
 			}
 		});
 		console.log(theSearchResults);
-
 	}
 	
 	findTrackInTracks(tracks, artistValue){			
