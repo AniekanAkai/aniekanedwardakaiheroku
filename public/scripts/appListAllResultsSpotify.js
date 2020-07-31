@@ -42,7 +42,7 @@ class NameForm extends React.Component{
 		console.log(theSearchResults);
 	}
 	
-	findTrackInTracks(tracks, artistValue){			
+	findTrackInTracks(tracks, artistValue){
 		this.populateSearchResults(tracks, artistValue);
 		if(theSearchResults.length==0){
 			let searchedTrack = this.state.trackName;
@@ -66,14 +66,14 @@ class NameForm extends React.Component{
 			}
 		} else {
 			this.setState({searchResults:theSearchResults});
-			this.updateTrackURL();
+			this.updateSpotifyTrackURL();
 		}
 	}
 
 	findSpotifyTrackInTracks = (tracks, artistValue) => {
 		this.populateSearchResults(tracks, artistValue);
 		this.setState({searchResults:theSearchResults});
-		this.updateTrackURL();
+		this.updateSpotifyTrackURL();
 	}
 
 
@@ -81,10 +81,16 @@ class NameForm extends React.Component{
 		let foundTrackListNode;
 		let artistValue = this.state.artistName;
 		let trackName = this.state.trackName;
+		let page = 0;
+		let limit=50;
+		
+		theSearchResults=[];
 		do {
+			let offset=page*limit;
 			console.log("Num of results: "+theSearchResults.length);
+			console.log("Page "+page);
 			spotifyApi.setAccessToken(oauthToken);
-			spotifyApi.searchTracks(trackName).then(
+			spotifyApi.searchTracksWithPaging(trackName, limit, offset).then(
 				(data) => {
 				  console.log('Searching spotify for "'+trackName+'" by '+artistValue, data);
 				  foundTrackListNode = data.tracks.items;
@@ -92,15 +98,17 @@ class NameForm extends React.Component{
 				},
 				(err) => {
 				  console.error(err);
+				  
 				}
 			  );
-			console.log("Num of results"+theSearchResults.length);
+			  page= page+1;
 		} while(theSearchResults==0 && foundTrackListNode);
+		console.log("Num of results"+theSearchResults.length);
 	}
 
-	updateTrackURL(){
+	updateSpotifyTrackURL(){
 		var latestIndex =this.state.searchResults.length-1; 
-		var track_url = (latestIndex>=0)?this.state.searchResults[latestIndex].stream_url:"...";
+		var track_url = (latestIndex>=0)?this.state.searchResults[latestIndex].href:"...";
 		var track_id = (latestIndex>=0)?this.state.searchResults[latestIndex].id:"0";
 		console.log(track_url);
 		console.log(track_id);

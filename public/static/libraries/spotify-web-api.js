@@ -1365,6 +1365,19 @@ var SpotifyWebApi = (function () {
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
 
+  Constr.prototype.searchWithPaging = function (query, types, resultLimit, offset, options, callback) {
+    var requestData = {
+      url: _baseUri + '/search/',
+      params: {
+        q: query,
+        type: types.join(','), 
+        limit: resultLimit, 
+        offset: offset
+      }
+    };
+    return _checkParamsAndPerformRequest(requestData, options, callback);
+  };
+
   /**
    * Fetches albums from the Spotify catalog according to a query.
    * See [Search for an Item](https://developer.spotify.com/web-api/search-item/) on
@@ -1408,6 +1421,10 @@ var SpotifyWebApi = (function () {
    */
   Constr.prototype.searchTracks = function (query, options, callback) {
     return this.search(query, ['track'], options, callback);
+  };
+
+  Constr.prototype.searchTracksWithPaging = function (query, limit, offset, options, callback) {
+    return this.searchWithPaging(query, ['track'], limit, offset, options, callback);
   };
 
   /**
