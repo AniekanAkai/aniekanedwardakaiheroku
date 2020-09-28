@@ -50,7 +50,7 @@ console.log(mongoDBHost);
 if(mongoDBHost == "localhost"){	
 	mongoose.connect('mongodb://localhost:27017/myblog');
 } else {
-	mongoose.connect('mongodb://'+CONFIG.databaseUser+':'+CONFIG.databasePassword+"@"+mongoDBHost+":"+mongoDBPort+"/"+CONFIG.databaseName);
+	mongoose.connect('mongodb+srv://'+CONFIG.databaseUser+':'+CONFIG.databasePassword+"@"+mongoDBHost+'/'+CONFIG.databaseName+'?retryWrites=true&w=majority');
 }
 var article = mongoose.model("article");
 var person = mongoose.model("user");
