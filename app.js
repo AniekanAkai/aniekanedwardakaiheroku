@@ -13,16 +13,20 @@ var express = require("express"),
 	
 var xml2js = require('xml2js');
 var parser = new xml2js.Parser();
-var fs = require('fs');
-
+var request = require('request'); // "Request" library
+var cors = require('cors');
+var querystring = require('querystring');
+var cookieParser = require('cookie-parser');
 
 require("./models/users");
 require("./models/sections");
 require("./models/articles");
+require("./models/featuredAlbum");
 
 var userController = require("./controllers/users");
 var articleController = require("./controllers/articles");
-//var sectionController = require("./controllers/sections");
+var appController = require("./controllers/app");
+var spotifyAuthController = require("./controllers/spotifyauth");
 
 var utils = require("./utility");	
 	
@@ -31,7 +35,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(logger('common'));
 app.use(express.static(__dirname+'/public'));
-
+app.use(cors())
+   .use(cookieParser());
 app.set('view engine', 'ejs');
 
 app.use(session({secret:"amoeba"}));
@@ -42,18 +47,18 @@ var mongoDBHost = CONFIG.databaseHost || "localhost";
 var mongoDBPort = CONFIG.databasePort || 27017;
 console.log(mongoDBHost);
 
-// mongodb://adminAkaiHeroku1:iwillchange1991@ds141175.mlab.com:41175/heroku_25qfl71w
-if(mongoDBHost == "localhost"){
-	//mongoose.connect('mongodb://localhost:'+CONFIG.databasePort+'/'+CONFIG.databaseName);//'/myblog');
+if(mongoDBHost == "localhost"){	
 	mongoose.connect('mongodb://localhost:27017/myblog');
 } else {
-	mongoose.connect('mongodb://'+CONFIG.databaseUser+':'+CONFIG.databasePassword+"@"+mongoDBHost+":"+mongoDBPort+"/"+CONFIG.databaseName);//'/myblog');
+	mongoose.connect('mongodb://'+CONFIG.databaseUser+':'+CONFIG.databasePassword+"@"+mongoDBHost+":"+mongoDBPort+"/"+CONFIG.databaseName);
 }
 var article = mongoose.model("article");
 var person = mongoose.model("user");
+var featuredAlbum = mongoose.model("featuredalbums");
 
 //extractArticlesFromXML();
 
+// Endpoints
 app.get("/", articleController.home);
 app.get("/listPosts", articleController.listAllArticles);
 app.post("/login", userController.login);
@@ -81,10 +86,12 @@ app.get("/article/:articleName", articleController.showArticle);
 
 app.post("/newArticle", articleController.createArticle);
 
+app.get("/newArticle", articleController.createArticle);
+
 app.get("/deleteArticle/:articleName", articleController.deleteArticle);
 
 app.get("/removeDeletedArticle/:articleName", function(req, res){
-	io.sockets.emit("deleteArticle", req.params.articleName);			
+	io.sockets.emit("deleteArticle", req.params.articleName);
 	console.log("Removed the article: " + req.params.articleName);
 });
 
@@ -102,6 +109,38 @@ app.get("/sendNewArticle/:articleName",  function(req, res){
 app.get("/sendNewSection/:sectionName", function(req, res){
 	io.sockets.emit('addingNewSection', req.params.sectionName);
 });
+
+app.post("/updateFeaturedAlbum", function(req, res){
+	console.log(req.body);
+	console.log(req.params);
+	var newFeature = {
+		artistName:req.body.artistName,
+		albumName:req.body.albumName,
+		embedCode:req.body.albumEmbedded
+	};
+	featuredAlbum.create(newFeature, function(err, album){
+		if(err){
+			console.log(err);
+			res.send(404);
+			return next(err);
+		}else{
+			res.redirect("/albumOfTheWeek");
+		}
+	});
+	
+});
+
+app.get("/albumOfTheWeek", function(req, res){
+	featuredAlbum.findOne().sort({createdAt:'desc'}).exec(function(err, latestFeaturedAlbum){
+		res.render("albumOfTheWeek", {"currentUser":{}, "featuredAlbum":latestFeaturedAlbum});
+	});
+});
+
+app.get("/app", appController.start);
+
+app.get('/spotifyLogin', spotifyAuthController.login);
+app.get('/app/callback', spotifyAuthController.callback);
+app.get('/app/refresh_token', spotifyAuthController.refreshtoken);
 
 io.sockets.on('connection',function(socket){
 	console.log("socket connected.");	

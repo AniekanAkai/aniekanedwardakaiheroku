@@ -1,0 +1,27 @@
+  High            Prototype Pollution
+
+  Package         utils-extend
+
+  Patched in      No patch available
+
+  Dependency of   file-system
+
+  Path            file-system > file-match > utils-extend
+
+  More info       https://nodesecurity.io/advisories/1502
+
+
+  High            Prototype Pollution
+
+  Package         utils-extend
+
+  Patched in      No patch available
+
+  Dependency of   file-system
+
+  Path            file-system > utils-extend
+
+  More info       https://nodesecurity.io/advisories/1502
+
+found 3 vulnerabilities (1 low, 2 high) in 260 scanned packages
+  3 vulnerabilities require manual review. See the full report for details.

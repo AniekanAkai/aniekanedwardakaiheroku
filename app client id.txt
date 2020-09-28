@@ -1,0 +1,2 @@
+soundclound_client_id=MpLVGIOGWboHqGT3WePdQvUOVd0sswgq
+spotify_client_id=7c36ba74eb0f442cb87bef2062f22d4a

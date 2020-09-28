@@ -1,0 +1,8 @@
+Tool to take playlist from streaming platform and port to another platform.
+ - webapp & mobile app?
+ - Main use case, user specifies the playlist name and platform and they can:
+		.Save in cloud
+		.Send to people as flexible format for any platform
+		.Move to new platform
+		.Can play in any platform
+- Secondary use case, user can create inter-platform playlists.

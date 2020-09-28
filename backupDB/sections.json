@@ -1,0 +1,10 @@
+[
+{ 
+    "_id" : ObjectId("59f6d6bea40422000465ec93"), 
+    "name" : "New Music", 
+    "description" : "\t  ", 
+    "creator" : ObjectId("59f6d6afa40422000465ec92"), 
+    "createdAt" : ISODate("2017-10-30T07:37:34.565+0000"), 
+    "__v" : NumberInt(0)
+}
+]
