@@ -3,7 +3,7 @@ dasgut blog features
 
 das gut app features
 - find track exact match with one click i.e. perform auto paging
-	- Soundcloud (Done)
+	- Soundcloud (NEeds to be redone, with API update.)
 	- spotify
 	- google play
 	- apple music
